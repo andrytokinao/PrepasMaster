@@ -1,0 +1,121 @@
+
+type AjoutFormation{
+    id:String
+    etat:String
+    type:String
+    user:UserApp
+    frestotale:Float
+    fresrestant:Float
+    inscrire:UserApp
+    cours:[Cours]
+}
+
+type Cours {
+    id:String
+    name:String
+    description:String
+}
+type Matiere{
+    id:String
+    name:String
+    description:String
+}
+type UserApp{
+    id:String
+    username:String
+    firstname:String
+    lastname:String
+    contact:String
+    email:String
+    adress:String
+    cin:String
+}
+type Compte {
+    id:String,
+    encaisser:Float,
+    toPayer:Float,
+    user:UserApp
+}
+
+type Inscription{
+    id:String
+    etat:String
+    type:String
+    user:UserApp
+    codeParenage:String
+    fresTotale:Float
+    fresRestant:Float
+    inscrire:UserApp
+    cours:[Cours]
+}
+type Transaction{
+    id:String,
+    numero:Float,
+    userSource:String,
+    userDest :String,
+    typeTransaction:TypeTransaction,
+    montant:String
+}
+type Query {
+    # Exemple de requête pour obtenir un utilisateur par ID
+    getUser(id: String!): UserApp
+}
+
+type Mutation {
+    inscriptions(
+        id:String,
+        username:String,
+        firstname:String,
+        lastname:String,
+        contact:String,
+        email:String,
+        adress:String,
+        cin:String,
+        codeParenage:String,
+        formations:[String],
+    ):UserApp
+
+    saveUser(userApp:UserImput):UserApp
+    addFormation(
+        userInscrit:String,
+        formations:[String],
+    ):String
+    parainage(
+        userInscrit:String
+        codeParenage:String,
+        userParenage:String
+    ):UserApp
+    payerCompte(
+        userSource:String,
+        userDest :String,
+        typeTransaction:TypeTransaction,
+        confirmation:Float
+        montant:String
+    ):Transaction
+}
+
+input UserImput {
+    id:Int,
+    username:String,
+    firstname:String,
+    lastname:String,
+    contact:String,
+    email:String,
+    adress:String,
+    cin:String,
+    codeParenage:String,
+    formations:[String],
+}
+enum TypeTransaction {
+    PARENAGE
+    INSCRIPTION
+    ADDCOURS
+    TRANSFERT
+    PRENDRE,
+    DECAISSEMENT,
+    ECAISSEMENT
+}
+
+
+
+
