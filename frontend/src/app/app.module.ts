@@ -2,15 +2,15 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { StudentsComponent } from './students/students.component';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import {StudentsModule} from "./students/students.module";
+import {MenueModule} from "./menue/menue.module";
 @NgModule({
   declarations: [
     AppComponent,
-    StudentsComponent
   ],
   imports: [
     BrowserModule,
@@ -18,7 +18,9 @@ import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap'
     HttpClientModule,
     NgbModule,
     NgbPaginationModule,
-    NgbAlertModule
+    NgbAlertModule,
+    StudentsModule,
+    MenueModule
   ],
   providers: [],
   bootstrap: [AppComponent]

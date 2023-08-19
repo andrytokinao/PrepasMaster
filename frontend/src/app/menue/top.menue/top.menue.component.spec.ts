@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StudentsComponent } from './students.component';
+import { TopMenueComponent } from './top.menue.component';
 
-describe('StudentsComponent', () => {
-  let component: StudentsComponent;
-  let fixture: ComponentFixture<StudentsComponent>;
+describe('TopMenueComponent', () => {
+  let component: TopMenueComponent;
+  let fixture: ComponentFixture<TopMenueComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [StudentsComponent]
+      declarations: [TopMenueComponent]
     });
-    fixture = TestBed.createComponent(StudentsComponent);
+    fixture = TestBed.createComponent(TopMenueComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

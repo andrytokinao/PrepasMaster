@@ -1,0 +1,218 @@
+.h2 h2 {
+  font-size: 25px;
+
+}
+
+input,
+select {
+  font-size: 14px;
+  line-height: 1.7;
+  min-width:80%;
+  padding: 3px 12px;
+  font-size: 14px;
+  color: #555;
+  background-color: rgba(240, 240, 250, .90);
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 0.5px 0.5px #00b1ba;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  word-wrap: break-word;
+}
+
+
+.active {
+  background-color: #00b1ba;
+  color: white;
+}
+
+.btn:hover {
+  background-color: #00b1ba;
+  color: white;
+}
+
+.container {
+  margin: auto;
+  padding-left: 2%;
+  vertical-align: bottom;
+  width: 100%;
+}
+
+.menu {
+  background-color: #00b1ba;
+  width: 15%;
+  color: white;
+  margin-top: 40px;
+  border-radius: 10px 0px 5px 10px;
+}
+
+.menu-item {
+  background-color: rgba(0, 120, 130, 0);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.menu-item-active {
+  background-color: white;
+  color: #00b1ba;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background-color: white;
+  color: #00b1ba;
+}
+
+.content {
+  background-color: rgba(0, 0, 0, .0);
+  min-height: 100vh;
+  margin-top: -10px;
+}
+
+.section {
+  width: 102%;
+  height: 100%;
+  border-radius: 100PX;
+  border-right: solid 10px #00b1ba;
+  border-top: solid 1px #00b1ba
+}
+
+.section-entete {
+  border-radius: 20px 20px 0px 0px;
+  background-color: rgba(0, 0, 0, .0);
+  height: 40px;
+  text-align: center;
+  color: #00b1ba;
+}
+
+.section-entete .user {
+  float: right;
+  width: 20%;
+  height: 100%;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.section-entete .user img {
+  width: 30px;
+}
+
+
+.section-liste {
+  margin: auto;
+  height: 80%;
+  text-align: center;
+}
+
+.section-liste .liste-personnage {
+  overflow-y: scroll;
+  height: 100%;
+  width: 96%;
+}
+
+.liste-personnage-item {
+  width: 150px;
+  display: inline-block;
+  border: 1px solid#00b1ba;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: .3rem;
+  float: left;
+  cursor: pointer;
+}
+
+.liste-personnage-item img {
+  width: 80px;
+}
+
+.epdt-item {
+  overflow-y: scroll;
+  height: 100%;
+  width: 96%;
+}
+
+.liste-jour-item {
+  width: 47%;
+  margin: 10px;
+  border-radius: 10px;
+  border: solid 2px #0300ba;
+  text-align: left;
+  float: left;
+}
+
+.jour {
+  background-color: aqua;
+}
+
+.jour span {
+  -webkit-transform: rotate(15deg);
+  vertical-align: auto;
+  vertical-align: 50%;
+}
+
+.horaire-item {
+  border: solid 2px #00b1ba;
+
+}
+
+.heure span {
+  -webkit-transform: rotate(15deg);
+}
+
+.matiere {
+  background-color: rgb(9, 255, 0);
+}
+
+.prof {
+  background-color: rgb(255, 0, 149);
+}
+
+.checked {
+  -webkit-box-shadow: inset 0 3px 3px rgba(102, 175, 233, .72), 0 0 8px rgba(102, 175, 233, .9);
+}
+
+
+.section-pagination {
+  border: solid 3px rgba(0, 0, 0, .0);
+;
+  height: 7%;
+  padding: 5px;
+}
+
+.section-pagination .conclusion {
+  float: left;
+  margin-right: 20pRRx;
+}
+
+.pagination {
+  margin: 0;
+}
+
+.pagination .active {
+  background-color: #00b1ba;
+  color: white;
+}
+
+.page-link :hover {
+  border: solid 1px #00b1ba;
+}
+
+.section-pagination .page {
+  float: left;
+  background-color: rgba(0, 0, 0, .0);
+  height: 2%;
+}
+
+.section-pagination .controle {
+  float: right;
+  background-color: rgba(0, 0, 0, .0);
+;
+}
+
+.section-footer {
+  text-align: center;
+  height: 6%;
+}

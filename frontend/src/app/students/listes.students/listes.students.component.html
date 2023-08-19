@@ -1,0 +1,13 @@
+<div class="main">
+  <div *ngIf="error">
+    <p> Error : {{error}}</p>
+  </div>
+
+</div>
+  <div class="liste-personnage ">
+    <div class="liste-personnage-item"  *ngFor="let s of students" ng-click="editStudent()">
+      <p> <span ng-bind="s.lastname"> </span> <span> {{s.username}}</span>
+        <img src="images/equipe/toky.png" alt="">
+      <p>Numero : <span >{{s.id}}</span></p>
+    </div>
+</div>

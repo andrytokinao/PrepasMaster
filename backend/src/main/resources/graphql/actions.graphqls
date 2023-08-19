@@ -58,7 +58,8 @@ type Transaction{
 }
 type Query {
     # Exemple de requête pour obtenir un utilisateur par ID
-    getUser(id: String!): UserApp
+    getUser(id: String!): UserApp,
+    getStudents:[UserApp]
 }
 
 type Mutation {

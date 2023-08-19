@@ -1,0 +1,20 @@
+
+.section-liste .liste-personnage {
+  overflow-y: scroll;
+  height: 100%;
+  width: 96%;
+}
+
+.liste-personnage-item {
+  width: 150px;
+  display: inline-block;
+  border: 1px solid#00b1ba;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: .3rem;
+  float: left;
+  cursor: pointer;
+}
+.liste-personnage-item img {
+  width: 80px;
+}
