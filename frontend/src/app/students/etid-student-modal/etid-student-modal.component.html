@@ -1,0 +1,57 @@
+<mat-dialog-content>
+  <mat-toolbar>
+    <div class="mat-toolbar-tools template-background">
+      <button  (click)="onCancelClick()" class="float-end btn-close"></button>
+      <h2>Nouveau étudiant</h2>
+    </div>
+  </mat-toolbar>
+  <mat-tab-group>
+    <mat-tab label="Prof">
+      <mat-card class="mat-padding">
+        <div class="sidebar-heding row">
+          <div class="col-md-3">
+            <mat-form-field class ="d-block">
+              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
+            </mat-form-field >
+            <mat-form-field class ="d-block">
+              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
+            </mat-form-field >
+            <mat-form-field class ="d-block">
+              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
+            </mat-form-field>
+            <mat-form-field class ="d-block">
+              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
+            </mat-form-field>
+          </div>
+          <div class="col-md-8">
+            <mat-form-field class ="d-block">
+              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
+            </mat-form-field>
+            <mat-form-field class ="d-block">
+              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
+            </mat-form-field>
+            <mat-form-field class ="d-block">
+              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
+            </mat-form-field >
+            <mat-form-field class ="d-block">
+              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card>
+    </mat-tab>
+    <mat-tab label="Affectation" >
+      <mat-card class="mat-padding">
+        <div class="sidebar-heding row">
+          <div class="col-md-12">
+          </div>
+        </div>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <span fxFlex></span>
+  <button mat-button (click)="onCancelClick()">Annuler</button>
+  <button mat-raised-button color="primary" (click)="onSaveClick()">Enregistrer</button>
+</mat-dialog-actions>

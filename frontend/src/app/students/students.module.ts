@@ -7,12 +7,26 @@ import {
     NgbAccordionCollapse,
     NgbAccordionDirective, NgbAccordionHeader, NgbAccordionItem
 } from "@ng-bootstrap/ng-bootstrap";
+import {MenueModule} from "../menue/menue.module";
+import {RouterModule, RouterOutlet} from "@angular/router";
+import {ComptableModule} from "../comptable/comptable.module";
+import {AdminModule} from "../admin/admin.module";
+import { VerificationComponent } from './verification/verification.component';
+import { EtidStudentModalComponent } from './etid-student-modal/etid-student-modal.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatCardModule} from "@angular/material/card";
+import {MatIconModule} from "@angular/material/icon";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatInputModule} from "@angular/material/input";
 
 
 
 @NgModule({
   declarations: [
-    ListesStudentsComponent
+    ListesStudentsComponent,
+    VerificationComponent,
+    EtidStudentModalComponent
   ],
   exports: [
     ListesStudentsComponent
@@ -24,7 +38,16 @@ import {
     NgbAccordionCollapse,
     NgbAccordionDirective,
     NgbAccordionHeader,
-    NgbAccordionItem
+    NgbAccordionItem,
+    MenueModule,
+    RouterOutlet,
+    MatDialogModule,
+    MatTabsModule,
+    MatCardModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatInputModule,
+
   ]
 })
 export class StudentsModule { }

@@ -1,0 +1,43 @@
+<!-- login-modal.component.html -->
+<h2 mat-dialog-title>Connexion / Inscription</h2>
+<mat-dialog-content>
+  <div *ngIf="!showRegistrationForm">
+    <h3>Connexion</h3>
+    <form #loginForm="ngForm" (ngSubmit)="submitLoginForm(loginForm)">
+      <mat-form-field class ="d-block">
+        <input matInput placeholder="Nom d'utilisateur" name="loginUsername" ngModel required>
+      </mat-form-field>
+      <mat-form-field class ="d-block">
+        <input matInput type="password" placeholder="Mot de passe" name="loginPassword" ngModel required>
+      </mat-form-field>
+      <button mat-button (click)="showRegistrationForm = true">Pas encore inscrit ?</button>
+      <button mat-raised-button type="submit" color="primary">Se connecter</button>
+    </form>
+  </div>
+  <div *ngIf="showRegistrationForm">
+    <h3>Inscription</h3>
+    <form #registrationForm="ngForm" (ngSubmit)="submitRegistrationForm(registrationForm)">
+      <mat-form-field class ="d-block">
+        <input matInput placeholder="Adresse e-mail" name="email" ngModel required>
+      </mat-form-field>
+      <mat-form-field class ="d-block">
+        <input matInput placeholder="Nom d'utilisateur" name="username" ngModel required>
+      </mat-form-field>
+      <mat-form-field class ="d-block">
+        <input matInput placeholder="Nom de famille" name="lastname" ngModel required>
+      </mat-form-field>
+      <mat-form-field class ="d-block">
+        <input matInput placeholder="Prénom" name="firstname" ngModel required>
+      </mat-form-field>
+      <mat-form-field class ="d-block">
+        <input matInput placeholder="Adresse" name="address" ngModel required>
+      </mat-form-field>
+      <mat-form-field class ="d-block">
+        <input matInput placeholder="Numéro de CIN" name="cin" ngModel required>
+      </mat-form-field>
+      <span class="btn" (click)="showRegistrationForm = false"> >Déjà inscrit ? Se connecter?? </span>
+      <button class="btn btn-success"  (click)="showRegistrationForm = false">Déjà inscrit ? Se connecter</button>
+      <button class="btn"  type="submit" color="primary">S'inscrire</button>
+    </form>
+  </div>
+</mat-dialog-content>

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RightMenueComponent } from './right.menue.component';
+import { RightMenueComponent } from './right-menue.component';
 
 describe('RightMenueComponent', () => {
   let component: RightMenueComponent;

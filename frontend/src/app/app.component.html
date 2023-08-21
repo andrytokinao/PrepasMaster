@@ -1,56 +1,33 @@
-<!---->
+<div class="containeur">
+  <div class="row">
+    <div class="col-md-1 menu">
+      <app-principale-menue></app-principale-menue>
+    </div>
+    <div class="col-md-10 content">
+      <div class="section">
+        <div class="section-entete">
+          <span class="user">
+            <img src="images/equipe/toky.png" alt="">
+            mon comte
+             <span> FR</span>
+           </span>
 
-<style>
-</style>
-<div >
-  <h2 > </h2>
-  <div id="imageAct" class="imageAct"></div>
-  <img id="image" />
-  <div class="container">
-    <div class="row">
-      <div class="col-md-1 menu">
-        <div ng-include="'template/menue/left-menue.html'">
+
+          <h1>Titre</h1>
         </div>
-      </div>
-      <div class="col-md-10 content">
-        <div class="section">
-          <div class="section-entete">
-            <div ng-include="'template/menue/title.html'">
-            </div>
-          </div>
-          <div class="section-filtre ">
-            <app-top-menue></app-top-menue>
-<!--            top menu -->
-          </div>
-          <div class="section-liste">
-            <div class="row">
-              <div class="col-md-11">
-                <app-liste-students> </app-liste-students>
-<!--                current page-->
-              </div>
-              <div class="col-md-1 filtre-droite">
-                <!--right menu-->
-              </div>
-            </div>
-          </div>
-          <div class="section-pagination">
-            <div class="conclusion">
-              Conclusion
-            </div>
-            <div class="page">
-              <div ng-include="'template/menue/pagination.html'">
-              </div>
-            </div>
-            <div class="controle">
-              <div ng-include="'template/menue/botom-controle.html'">
-              </div>
-            </div>
-          </div>
-          <div class="section-footer">
-            voici un footer
-          </div>
+        <div class ="content">
+          <router-outlet></router-outlet>
         </div>
+        <div class="controle">
+          <app-bottom-controle></app-bottom-controle>
+        </div>
+
       </div>
+
+    </div>
+    <div class="section-footer">
+      voici un footer
     </div>
   </div>
 </div>
+

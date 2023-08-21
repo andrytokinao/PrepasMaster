@@ -1,13 +1,13 @@
 <div class="section-filtre ">
   <form action="" class="droite">
   <input type="text" ng-model="toshearch">
-  <label for="" ng-click="chearche()" ng-bind="toshearch"> OK</label>
+  <label for="" ng-click="chearche()" ng-bind="toshearch"> </label>
 </form>
 
 <div class="gauche ">
-		<span class="filre-gauche  " ng-repeat="filtre in currentMenue.sousMenue" ng-click="selectFilter(filtre)" ng-class="isActive(filtre.id,currentFilter.id,'top-filtre-')">
-			<span class="title" ng-bind="filtre.title"> </span> :
-			<span class="filtre-value" ng-bind="filtre.value.name">Value</span>
+		<span class="filre-gauche  "  *ngFor="let sm of sousMenues"   ng-click="selectFilter(filtre)" ng-class="isActive(filtre.id,currentFilter.id,'top-filtre-')">
+			<span class="title" > {{sm.titre}} </span> :
+			<span class="filtre-value" >{{sm.lien}}</span>
 		</span>
 </div>
 </div>
