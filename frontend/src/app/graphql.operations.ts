@@ -1,4 +1,6 @@
-import {gql} from "apollo-angular";
+import {Apollo, gql} from "apollo-angular";
+export type Maybe<T> = T | null;
+
 const GET_STUDENTS = gql`
   query{
     getStudents{

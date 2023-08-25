@@ -3,13 +3,17 @@
 <mat-dialog-content>
   <div *ngIf="!showRegistrationForm">
     <h3>Connexion</h3>
-    <form #loginForm="ngForm" (ngSubmit)="submitLoginForm(loginForm)">
+    <form #loginForm="ngForm"  (ngSubmit)="handleLogin()">
       <mat-form-field class ="d-block">
-        <input matInput placeholder="Nom d'utilisateur" name="loginUsername" ngModel required>
+        <input matInput placeholder="Email/ Tél /Username " name="username" #name [(ngModel)]="userConnection.username" required>
+
       </mat-form-field>
       <mat-form-field class ="d-block">
-        <input matInput type="password" placeholder="Mot de passe" name="loginPassword" ngModel required>
+        <input matInput type="password" placeholder="Mot de passe" name="password" #name [(ngModel)]="userConnection.password" required>
       </mat-form-field>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
+      </div>
       <button mat-button (click)="showRegistrationForm = true">Pas encore inscrit ?</button>
       <button mat-raised-button type="submit" color="primary">Se connecter</button>
     </form>

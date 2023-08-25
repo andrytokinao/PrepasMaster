@@ -25,9 +25,11 @@ import {AdminFormationComponent} from "./admin/admin.formation/admin.formation.c
 import {LoginComponent} from "./compte/login/login.component";
 import {ProfileComponent} from "./compte/profile/profile.component";
 import {CompteModule} from "./compte/compte.module";
+import { HomeComponent } from './home/home.component';
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
   ],
   imports: [
      BrowserModule,
@@ -49,7 +51,8 @@ import {CompteModule} from "./compte/compte.module";
       {path: "admin/config", component: ConfigComponent},
       {path: "admin/users", component: UsersComponent},
       {path: "compte/singin", component: LoginComponent},
-      {path: "compte/profile", component: ProfileComponent}
+      {path: "compte/profile", component: ProfileComponent},
+      {path: "", component: HomeComponent}
 
     ]),
     ControleModule,

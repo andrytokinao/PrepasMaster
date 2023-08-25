@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {NgbInputDatepicker} from "@ng-bootstrap/ng-bootstrap/datepicker/datepicker-input";
 import {LoginModalComponent} from "./login-modal/login-modal.component";
@@ -9,7 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   constructor(private dialog: MatDialog) {}
 
   openDialog(): void {
@@ -21,5 +21,8 @@ export class LoginComponent {
     dialogRef.afterClosed().subscribe((res) => {
       // Handle the result from the dialog if needed
     });
+  }
+
+  ngOnInit(): void {
   }
 }
