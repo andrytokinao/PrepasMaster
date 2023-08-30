@@ -19,6 +19,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatInputModule} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
 
 
 
@@ -31,23 +32,24 @@ import {MatInputModule} from "@angular/material/input";
   exports: [
     ListesStudentsComponent
   ],
-  imports: [
-    CommonModule,
-    NgbAccordionBody,
-    NgbAccordionButton,
-    NgbAccordionCollapse,
-    NgbAccordionDirective,
-    NgbAccordionHeader,
-    NgbAccordionItem,
-    MenueModule,
-    RouterOutlet,
-    MatDialogModule,
-    MatTabsModule,
-    MatCardModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatInputModule,
+    imports: [
+        CommonModule,
+        NgbAccordionBody,
+        NgbAccordionButton,
+        NgbAccordionCollapse,
+        NgbAccordionDirective,
+        NgbAccordionHeader,
+        NgbAccordionItem,
+        MenueModule,
+        RouterOutlet,
+        MatDialogModule,
+        MatTabsModule,
+        MatCardModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatInputModule,
+        FormsModule,
 
-  ]
+    ]
 })
 export class StudentsModule { }

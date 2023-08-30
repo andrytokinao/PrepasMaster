@@ -7,6 +7,9 @@
 .mat-toolbar-tools{
   width:100%;
 }
+.sidebar-hedingd{
+  min-height: 300px;
+}
 .mat-card {
   margin: 16px;
   padding: 16px;

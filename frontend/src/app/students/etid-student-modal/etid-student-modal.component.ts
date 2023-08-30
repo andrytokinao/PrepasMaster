@@ -1,7 +1,9 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Apollo} from "apollo-angular";
-import {SaveStudentsDocument, UserApp} from "../../index/index-student";
+import {StudentService} from "../../service/student/student.service";
+import {UserApp} from "../../index/index-student";
+import {stripTypename} from "@apollo/client/utilities";
 
 @Component({
   selector: 'app-etid-student-modal',
@@ -9,50 +11,33 @@ import {SaveStudentsDocument, UserApp} from "../../index/index-student";
   styleUrls: ['./etid-student-modal.component.css']
 })
 export class EtidStudentModalComponent {
-  private newStudent:  UserApp ={
-    id: 200,
-    adress: "undefined",
-    anneeBac: "undefined",
-    cin: "undefined",
-    contact: "undefined",
-    email: "undefined",
-    firstname: "undefined",
-    lastname: "undefined",
-    username: "undefined"
-
-  };
+  public newStudent:  UserApp ;
+  public studentService;
   constructor(
     public dialogRef: MatDialogRef<EtidStudentModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private apollo: Apollo
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: { student: UserApp },
+    private apollo: Apollo,
+    public studentService1 :StudentService
+  ) {
+    this.newStudent = data.student;
+    this.studentService = studentService1;
+  }
 
   onCancelClick(): void {
     this.dialogRef.close();
   }
-
-  onSaveClick() {
-    alert("begen save")
-    this.apollo.mutate({
-      mutation: SaveStudentsDocument,
-      variables: {
-        input: {
-          firstName: this.newStudent.firstname,
-          lastName: this.newStudent.lastname,
-          // ... autres champs de l'étudiant ...
-        },
-      },
-    }).subscribe(
+  onSaveClick(){
+    const strippedInput = stripTypename(this.newStudent);
+    this.studentService.saveStudent(strippedInput).subscribe(
       ({ data }) => {
-        // La mutation a été exécutée avec succès, traitez les données ici si nécessaire
         alert('Étudiant enregistré avec succès:');
       },
       (error) => {
-        // Une erreur s'est produite lors de l'exécution de la mutation, traitez l'erreur ici si nécessaire
         const errorJson = JSON.stringify(error);
         alert('Erreur lors de l\'enregistrement de l\'étudiant: ' + errorJson);
 
       }
     );
   }
+
 }

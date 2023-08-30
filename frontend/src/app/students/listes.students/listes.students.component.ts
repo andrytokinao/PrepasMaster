@@ -3,6 +3,8 @@ import {Apollo} from "apollo-angular";
 import {GET_STUDENTS} from "../../graphql.operations";
 import {EtidStudentModalComponent} from "../etid-student-modal/etid-student-modal.component";
 import {MatDialog} from "@angular/material/dialog";
+import {UserApp} from "../../index/index-student";
+import {UserConnection} from "../../index/user-app";
 
 @Component({
   selector: 'app-liste-students',
@@ -12,7 +14,6 @@ import {MatDialog} from "@angular/material/dialog";
 export class ListesStudentsComponent {
   students :any[]=[];
   error : any;
-
   constructor(private apollo:Apollo,public dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -25,16 +26,32 @@ export class ListesStudentsComponent {
     );
   }
 
-  openDialog(): void {
+  openDialog(student:UserApp): void {
     const dialogRef = this.dialog.open(EtidStudentModalComponent, {
-      width: '800px',
-      height: '810px',
-      minWidth: '550px'
-    });
+      width: '600px',
+      height: '550px',
+      minWidth: '550px',
+      data: { student }
+    },);
 
     dialogRef.afterClosed().subscribe(result => {
       // Logique après la fermeture de la boîte de dialogue
     });
   }
 
+  openNewStudent() {
+    var student = {
+
+    }
+    const dialogRef = this.dialog.open(EtidStudentModalComponent, {
+      width: '600px',
+      height: '550px',
+      minWidth: '550px',
+      data: { student }
+    },);
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Logique après la fermeture de la boîte de dialogue
+    });
+  }
 }

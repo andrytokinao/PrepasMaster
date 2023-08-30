@@ -9,16 +9,15 @@
   <div class="row">
     <div class="col-md-10">
       <div class="liste-personnage ">
-        <div class="liste-personnage-item" *ngFor="let s of students" (click)="openDialog()">
-          <p><span ng-bind="s.lastname"> </span> <span> {{s.username}}</span>
+        <div class="liste-personnage-item" *ngFor="let s of students" (click)="openDialog(s)">
+          <p><span > {{s.lastname}} </span> <span> {{s.firstname}}</span>
             <img src="images/equipe/toky.png" alt="">
           <div class="container mt-4">
-            <span>Angular 16 Bootstrap 5 Popup Modal Example</span>
 
           </div>
           <p >Numero : <span>{{s.id}}</span></p>
         </div>
-        <div class="liste-personnage-item"  (click)="openDialog()">
+        <div class="liste-personnage-item"  (click)="openNewStudent()">
           <p><span ng-bind="s.lastname"> </span> <span> Nuveau</span>
             <img src="images/equipe/toky.png" alt="">
           <div class="container mt-4">

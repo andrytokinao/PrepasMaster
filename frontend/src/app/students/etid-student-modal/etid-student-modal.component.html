@@ -1,50 +1,88 @@
 <mat-dialog-content>
   <mat-toolbar>
     <div class="mat-toolbar-tools template-background">
-      <button  (click)="onCancelClick()" class="float-end btn-close"></button>
+      <button (click)="onCancelClick()" class="float-end btn-close"></button>
       <h2>Nouveau étudiant</h2>
     </div>
   </mat-toolbar>
   <mat-tab-group>
-    <mat-tab label="Prof">
+    <mat-tab label="Profile">
       <mat-card class="mat-padding">
         <div class="sidebar-heding row">
-          <div class="col-md-3">
-            <mat-form-field class ="d-block">
-              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
-            </mat-form-field >
-            <mat-form-field class ="d-block">
-              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
-            </mat-form-field >
-            <mat-form-field class ="d-block">
-              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
-            </mat-form-field>
-            <mat-form-field class ="d-block">
-              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
-            </mat-form-field>
-          </div>
-          <div class="col-md-8">
-            <mat-form-field class ="d-block">
-              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
-            </mat-form-field>
-            <mat-form-field class ="d-block">
-              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
-            </mat-form-field>
-            <mat-form-field class ="d-block">
-              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
-            </mat-form-field >
-            <mat-form-field class ="d-block">
-              <input matInput type="text" placeholder="Par exemple: Terminale S 1" class="d100">
-            </mat-form-field>
-          </div>
+          <mat-form-field class="d-block">
+            <input matInput type="text" placeholder="Username" class="d100" [(ngModel)]="newStudent.username">
+          </mat-form-field>
+          <mat-form-field class="d-block">
+            <input matInput type="text" placeholder="Nome " class="d100" [(ngModel)]="newStudent.firstname">
+          </mat-form-field>
+          <mat-form-field class="d-block">
+            <input matInput type="text" placeholder="Prénom  " class="d100" [(ngModel)]="newStudent.lastname">
+          </mat-form-field>
+          <mat-form-field class="d-block">
+            <input matInput type="text" placeholder=" Address   " class="d100" [(ngModel)]="newStudent.adress">
+          </mat-form-field>
+          <mat-form-field class="d-block">
+            <input matInput type="text" placeholder=" contact" class="d100" [(ngModel)]="newStudent.contact">
+          </mat-form-field>
+          <mat-form-field class="d-block">
+            <input matInput type="text" placeholder="E-Mail " class="d100">
+          </mat-form-field>
+          <mat-form-field class="d-block">
+            <input matInput type="text" placeholder=" Série" class="d100">
+          </mat-form-field>
+          <mat-form-field class="d-block">
+            <input matInput type="text" placeholder="Année du back" class="d100">
+          </mat-form-field>
         </div>
       </mat-card>
     </mat-tab>
-    <mat-tab label="Affectation" >
+    <mat-tab label="Parcours ">
       <mat-card class="mat-padding">
-        <div class="sidebar-heding row">
-          <div class="col-md-12">
-          </div>
+        <div class="sidebar-hedingd   ">
+          <ol class="list-group list-group-numbered">
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">Prepa Poly :Company</div>
+                <p>Septembre - Novembre : 2023 : Company</p>
+              </div>
+              <span class="badge bg-primary rounded-pill">14</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">Prepa Agro : Company</div>
+                Septembre - Novembre : 2023
+              </div>
+              <span class="badge bg-primary rounded-pill glyphicon glyphicon-pencil"></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">Prepa ENI : Company</div>
+                Septembre - Novembre : 2023
+              </div>
+              <span class="badge bg-primary rounded-pill">14</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">Nouveau</div>
+                <div>
+                  <span> Cours :</span>
+                  <input type="text"/>
+                </div>
+                <div>
+                  <span> Durrée : </span>
+                  <input type="text"/>
+                </div>
+                <div>
+                  <span> Description  : </span>
+                  50 000 Ariary
+                </div>
+              </div>
+
+
+              <span class="badge bg-primary rounded-pill">Ajouter</span>
+              <span class="badge bg-primary rounded-pill">Annuler </span>
+            </li>
+          </ol>
         </div>
       </mat-card>
     </mat-tab>
