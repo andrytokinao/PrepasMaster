@@ -1,7 +1,14 @@
 package com.kinga.pepa.services;
 
+import com.kinga.pepa.config.ConfigAutorities;
+import com.kinga.pepa.deo.UserAppDto;
+import com.kinga.pepa.deo.UserDetailsDeto;
+import com.kinga.pepa.config.Permission;
+import com.kinga.pepa.config.Roles;
 import com.kinga.pepa.entity.UserApp;
 import com.kinga.pepa.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -9,16 +16,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static com.kinga.pepa.config.Roles.ROLE_USER;
+import static com.kinga.pepa.utils.KingaUtils.*;
 
 
 @Service
 public class UserService {
     @Autowired
-    UserRepository userRepository ;
+    UserRepository userRepository;
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public void flush() {
         userRepository.flush();
@@ -41,26 +54,23 @@ public class UserService {
         userRepository.deleteAllInBatch(entities);
     }
 
-    public void deleteAllByIdInBatch(Iterable<Integer> integers) {
-        userRepository.deleteAllByIdInBatch(integers);
-    }
 
     public void deleteAllInBatch() {
         userRepository.deleteAllInBatch();
     }
 
     @Deprecated
-    public UserApp getOne(Integer integer) {
-        return userRepository.getOne(integer);
+    public UserApp getOne(String string) {
+        return userRepository.getOne(string);
     }
 
     @Deprecated
-    public UserApp getById(Integer integer) {
-        return userRepository.getById(integer);
+    public UserApp getById(String string) {
+        return userRepository.getById(string);
     }
 
-    public UserApp getReferenceById(Integer integer) {
-        return userRepository.getReferenceById(integer);
+    public UserApp getReferenceById(String string) {
+        return userRepository.getReferenceById(string);
     }
 
     public <S extends UserApp> List<S> findAll(Example<S> example) {
@@ -71,79 +81,98 @@ public class UserService {
         return userRepository.findAll(example, sort);
     }
 
-    public <S extends UserApp> List<S> saveAll(Iterable<S> entities) {
-        return userRepository.saveAll(entities);
-    }
-
     public List<UserApp> findAll() {
         return userRepository.findAll();
     }
 
-    public List<UserApp> findAllById(Iterable<Integer> integers) {
-        return userRepository.findAllById(integers);
-    }
-
     public <S extends UserApp> S save(S entity) {
+        if (!StringUtils.isEmpty(entity.getUsername())) {
+            UserApp userApp = userRepository.findByUsername(entity.getUsername());
+            if (userApp != null && (!StringUtils.endsWithIgnoreCase(entity.getId(), userApp.getId())))
+                throw new RuntimeException("Usename " + entity.getUsername() + " is alredy in used");
+        } else {
+            entity.setUsername(generateUsername(entity.getFirstname(), entity.getLastname()));
+        }
+        if (StringUtils.isEmpty(entity.getContact())) {
+            throw new RuntimeException("Contact is requered");
+        }
+        if (!isValidPhoneNumber(entity.getContact())) {
+            throw new RuntimeException("Pleas , make contact valid for " + entity.getContact());
+        }
+        entity.setContact(cleanPhonNumber(entity.getContact()));
+
+        UserApp userApp = userRepository.findByContact(entity.getContact());
+        if (userApp != null && (!StringUtils.endsWithIgnoreCase(entity.getId(), userApp.getId())))
+            throw new RuntimeException("Contact " + separatePhoneNumber(entity.getContact()) + " is alredy in used");
+        if (!StringUtils.isEmpty(entity.getEmail())) {
+            userApp = userRepository.findByContact(entity.getContact().trim());
+            if (userApp != null && (!StringUtils.endsWithIgnoreCase(entity.getId(), userApp.getId())))
+                throw new RuntimeException("Email  " + entity.getContact() + " is alredy in used");
+        }
+        if (!StringUtils.isEmpty(entity.getCin())) {
+            entity.setCin(entity.getCin().trim());
+            userApp = userRepository.findByContact(entity.getCin().trim());
+            if (userApp != null)
+                throw new RuntimeException("Email  " + entity.getContact() + " is alredy in used");
+        }
+
+        if (StringUtils.isEmpty(entity.getId())) {
+            String id = UUID.randomUUID().toString().substring(0, 8);
+            entity.setId(id);
+        }
+        if (StringUtils.isEmpty(entity.getRoles())) {
+            logger.info("Adding default roles for " + ROLE_USER);
+            entity.addRolles(ROLE_USER);
+        } else {
+            logger.info("Rols existing 0 " + entity.getRoles());
+        }
+        if (StringUtils.isEmpty(entity.getPassword()) ) {
+            if(StringUtils.isEmpty(entity.getPass())) {
+                entity.setPass(UUID.randomUUID().toString());
+            }
+            entity.setPassword(encodePassword(entity.getPass()));
+        } else {
+            if(! StringUtils.isEmpty(entity.getPass()))  {
+              //TODO   Prise en charge le changement de mot de pass
+                entity.setPassword(encodePassword(entity.getPass()));
+            }
+        }
         return userRepository.save(entity);
     }
 
-    public Optional<UserApp> findById(Integer integer) {
-        return userRepository.findById(integer);
+    public UserApp findByUsernamOrContactOrCinOrEmail(String login) {
+        UserApp userApp = null;
+        if (isValidPhoneNumber(login)) {
+            userApp = userRepository.findByContact(cleanPhonNumber(login));
+        }
+        if (userApp == null)
+            userApp = userRepository.findByUsername(login);
+        if (userApp == null)
+            userApp = userRepository.findByEmail(login);
+        if (userApp == null)
+            userApp = userRepository.findByCin(login);
+        if (userApp == null) {
+            userApp = userRepository.getById(login);
+        }
+        if (userApp == null)
+            return null;
+        return userApp;
     }
 
-    public boolean existsById(Integer integer) {
-        return userRepository.existsById(integer);
-    }
+    public UserDetailsDeto findByUsername(String username) {
+        Set<String> permissionNames = new HashSet<>();
+        if (StringUtils.isEmpty(username))
+            return null;
+        UserApp userApp = findByUsernamOrContactOrCinOrEmail(username);
+        if (userApp == null)
+            return null;
+        Set<String> roleApps = userApp.getRolesToList();
+        if (CollectionUtils.isEmpty(roleApps))
+            return new UserDetailsDeto(userApp.getUsername(), userApp.getPassword(), permissionNames);
 
-    public long count() {
-        return userRepository.count();
-    }
-
-    public void deleteById(Integer integer) {
-        userRepository.deleteById(integer);
-    }
-
-    public void delete(UserApp entity) {
-        userRepository.delete(entity);
-    }
-
-    public void deleteAllById(Iterable<? extends Integer> integers) {
-        userRepository.deleteAllById(integers);
-    }
-
-    public void deleteAll(Iterable<? extends UserApp> entities) {
-        userRepository.deleteAll(entities);
-    }
-
-    public void deleteAll() {
-        userRepository.deleteAll();
-    }
-
-    public List<UserApp> findAll(Sort sort) {
-        return userRepository.findAll(sort);
-    }
-
-    public Page<UserApp> findAll(Pageable pageable) {
-        return userRepository.findAll(pageable);
-    }
-
-    public <S extends UserApp> Optional<S> findOne(Example<S> example) {
-        return userRepository.findOne(example);
-    }
-
-    public <S extends UserApp> Page<S> findAll(Example<S> example, Pageable pageable) {
-        return userRepository.findAll(example, pageable);
-    }
-
-    public <S extends UserApp> long count(Example<S> example) {
-        return userRepository.count(example);
-    }
-
-    public <S extends UserApp> boolean exists(Example<S> example) {
-        return userRepository.exists(example);
-    }
-
-    public <S extends UserApp, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
-        return userRepository.findBy(example, queryFunction);
+        permissionNames = roleApps.stream()
+                .flatMap(roleApp -> (ConfigAutorities.getAutorities(roleApp).stream()))
+                .collect(Collectors.toSet());
+        return new UserDetailsDeto(userApp.getUsername(), userApp.getPassword(), permissionNames);
     }
 }

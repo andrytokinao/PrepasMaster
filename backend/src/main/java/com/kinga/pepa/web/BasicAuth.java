@@ -1,5 +1,6 @@
 package com.kinga.pepa.web;
 
+import com.kinga.pepa.config.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Map;
 public class BasicAuth {
     @GetMapping(path = "/login")
     @ResponseBody
+    @Autorities.Loged
     public Map<String,String> basicauth() {
         Map<String, String> response = new HashMap<>();
         response.put("result","Success");

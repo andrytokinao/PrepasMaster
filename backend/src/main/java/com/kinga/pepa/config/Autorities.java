@@ -7,6 +7,10 @@ import java.lang.annotation.RetentionPolicy;
 
 public class Autorities {
     @Retention(RetentionPolicy.RUNTIME)
+    @PreAuthorize("hasAuthority('CAN_DELETE_USER')")
+    public @interface CanDelete {
+    }
+    @Retention(RetentionPolicy.RUNTIME)
     @PreAuthorize("hasAuthority('CAN_CREATE_USER')")
     public @interface CanCreateUser {
     }
@@ -17,10 +21,11 @@ public class Autorities {
     @Retention(RetentionPolicy.RUNTIME)
     @PreAuthorize("hasAuthority('CAN_UPDATE_USER')")
     public @interface CanUpdateUser {
+
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    @PreAuthorize("hasAuthority('CAN_DELETE_USER')")
-    public @interface CanDeleteUser {
+    @PreAuthorize("hasAuthority('LOGED')")
+    public @interface Loged {
     }
 }

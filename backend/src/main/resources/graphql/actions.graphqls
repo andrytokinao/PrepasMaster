@@ -1,20 +1,26 @@
 
-type AjoutFormation{
-    id:String
-    etat:String
-    type:String
-    user:UserApp
-    frestotale:Float
-    fresrestant:Float
-    inscrire:UserApp
-    cours:[Cours]
-}
-
-type Cours {
-    id:String
+type Formation {
+    id:Int
     name:String
     description:String
 }
+type Parcours{
+    id:Int
+    formation:Formation
+    userApp:UserApp
+    company:Company
+    durree:Int
+    unitiDurre:String
+    prix:Float
+    description:String
+}
+type Company {
+    id:Int
+    name:String
+    slogan:String
+    description:String
+}
+
 type Matiere{
     id:String
     name:String
@@ -28,7 +34,8 @@ type UserApp{
     contact:String
     email:String
     adress:String
-    cin:String
+    cin:String,
+    roles:String
 }
 type Compte {
     id:String,
@@ -37,16 +44,16 @@ type Compte {
     user:UserApp
 }
 
-type Inscription{
+type UserAppImput{
     id:String
-    etat:String
-    type:String
-    user:UserApp
-    codeParenage:String
-    fresTotale:Float
-    fresRestant:Float
-    inscrire:UserApp
-    cours:[Cours]
+    username:String
+    firstname:String
+    lastname:String
+    contact:String
+    email:String
+    adress:String
+    cin:String,
+    roles:String
 }
 type Transaction{
     id:String,
@@ -58,24 +65,11 @@ type Transaction{
 }
 type Query {
     # Exemple de requête pour obtenir un utilisateur par ID
-    getUser(id: String!): UserApp,
+    getUser(username: String!): UserApp,
     getStudents:[UserApp]
 }
 
 type Mutation {
-    inscriptions(
-        id:String,
-        username:String,
-        firstname:String,
-        lastname:String,
-        contact:String,
-        email:String,
-        adress:String,
-        cin:String,
-        codeParenage:String,
-        formations:[String],
-    ):UserApp
-
     saveUser(userApp:UserImput):UserApp
     addFormation(
         userInscrit:String,
@@ -93,11 +87,23 @@ type Mutation {
         confirmation:Float
         montant:String
     ):Transaction
+    addParcours(parcours:ParcoursImput) :Parcours
 }
-
+input ParcoursImput{
+    id:Int
+    formationId:Int
+    userId:String
+    companyId:Int
+    responsableId:String
+    durree:Int
+    unitiDurre:String
+    prix:Float
+    description:String
+}
 input UserImput {
-    id:Int,
+    id:String,
     username:String,
+    password :String,
     firstname:String,
     lastname:String,
     contact:String,
@@ -105,7 +111,8 @@ input UserImput {
     adress:String,
     cin:String,
     codeParenage:String,
-    formations:[String],
+    pass :String
+
 }
 enum TypeTransaction {
     PARENAGE
