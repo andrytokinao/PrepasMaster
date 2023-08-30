@@ -28,6 +28,7 @@ export class EtidStudentModalComponent {
   }
   onSaveClick(){
     const strippedInput = stripTypename(this.newStudent);
+    alert('Data '+JSON.stringify(strippedInput));
     this.studentService.saveStudent(strippedInput).subscribe(
       ({ data }) => {
         alert('Étudiant enregistré avec succès:');

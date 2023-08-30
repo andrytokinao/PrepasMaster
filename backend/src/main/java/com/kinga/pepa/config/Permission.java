@@ -13,6 +13,7 @@ public class Permission {
     public static String CAN_EDIT_COMPANY = "CAN_EDIT_COMPANY";
     public static String CAN_ROLE_VIEW_COMPANY = "CAN_ROLE_VIEW_COMPANY";
     public static String LOGED = "LODED";
+    public static String CAN_VIEW_LIST = "CAN_VIEW_LIST";
 
 }
 

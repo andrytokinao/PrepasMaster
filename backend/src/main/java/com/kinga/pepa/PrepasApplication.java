@@ -8,6 +8,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.util.Arrays;
+
+import static com.kinga.pepa.config.Permission.CAN_VIEW_LIST;
+import static com.kinga.pepa.config.Roles.ROLE_RESPONSABLE;
+
 @SpringBootApplication
 public class PrepasApplication {
 
@@ -19,6 +24,7 @@ public class PrepasApplication {
         userApp.setLastname("Andriamahefasoa");
         userApp.setFirstname("Tokiniaina");
         userApp.setContact("0341981972");
+        userApp.addRolles(Arrays.asList(ROLE_RESPONSABLE));
         userApp = userService.save(userApp);
 
     }

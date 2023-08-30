@@ -11,6 +11,10 @@ public class Autorities {
     public @interface CanDelete {
     }
     @Retention(RetentionPolicy.RUNTIME)
+    @PreAuthorize("hasAuthority('CAN_VIEW_LIST')")
+    public @interface CanViewList {
+    }
+    @Retention(RetentionPolicy.RUNTIME)
     @PreAuthorize("hasAuthority('CAN_CREATE_USER')")
     public @interface CanCreateUser {
     }

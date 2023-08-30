@@ -15,10 +15,31 @@ public class ConfigAutorities {
     private static Map<String, List<String>> roleToAutorities = new HashMap<>();
 
     private static void loadConfiguration(){
-        roleToAutorities.put(ROLE_SYS_ADMIN, Arrays.asList(LOGED,CAN_ROLE_VIEW_COMPANY, CAN_ADD_COMPANY, CAN_EDIT_COMPANY, CAN_AFFECT_ROLE));
-        roleToAutorities.put(ROLE_ADMIN, Arrays.asList(LOGED,CAN_ROLE_VIEW_COMPANY, CAN_EDIT_COMPANY, CAN_AFFECT_ROLE));
-        roleToAutorities.put(ROLE_RESPONSABLE, Arrays.asList(LOGED,CAN_ROLE_VIEW_COMPANY, CAN_AFFECT_ROLE));
-        roleToAutorities.put(ROLE_USER, Arrays.asList(LOGED,CAN_ROLE_VIEW_COMPANY));
+        roleToAutorities.put(
+                ROLE_SYS_ADMIN, Arrays.asList(
+                        CAN_VIEW_LIST,
+                        LOGED,CAN_ROLE_VIEW_COMPANY,
+                        CAN_ADD_COMPANY,
+                        CAN_EDIT_COMPANY,
+                        CAN_AFFECT_ROLE));
+        roleToAutorities.put(
+                ROLE_ADMIN,
+                Arrays.asList(
+                        CAN_VIEW_LIST,
+                        LOGED,
+                        CAN_ROLE_VIEW_COMPANY,
+                        CAN_EDIT_COMPANY,
+                        CAN_AFFECT_ROLE));
+        roleToAutorities.put(ROLE_RESPONSABLE, Arrays.asList(
+                CAN_VIEW_LIST,
+                LOGED,
+                CAN_ROLE_VIEW_COMPANY,
+                CAN_AFFECT_ROLE));
+        roleToAutorities.put(
+                ROLE_USER,
+                Arrays.asList(
+                        LOGED,
+                        CAN_ROLE_VIEW_COMPANY));
     }
     public static List<String> getAutorities(String role){
         logger.info("Load autorities for role "+role);
