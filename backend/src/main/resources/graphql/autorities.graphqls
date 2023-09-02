@@ -1,0 +1,5 @@
+
+type Autoritie{
+    autoritie:String
+}
+

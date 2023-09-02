@@ -11,9 +11,13 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.kinga.pepa.entity.UserApp;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -34,7 +38,6 @@ public class GQController {
     public UserApp getUser(@Argument String username){
         return userService.findByUsernamOrContactOrCinOrEmail(username);
     }
-
     @QueryMapping
     @Autorities.CanViewList
     public List<UserApp> getStudents(){

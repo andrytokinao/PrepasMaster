@@ -1,0 +1,89 @@
+
+type Formation {
+    id:Int
+    name:String
+    description:String
+}
+type Parcours{
+    id:Int
+    formation:Formation
+    userApp:UserApp
+    company:Company
+    durree:Int
+    unitiDurre:String
+    prix:Float
+    description:String
+}
+type Company {
+    id:Int
+    name:String
+    slogan:String
+    description:String
+}
+
+type Matiere{
+    id:String
+    name:String
+    description:String
+}
+type UserApp{
+    id:String
+    username:String
+    firstname:String
+    lastname:String
+    contact:String
+    email:String
+    adress:String
+    cin:String,
+    roles:String
+}
+type Compte {
+    id:String,
+    encaisser:Float,
+    toPayer:Float,
+    user:UserApp
+}
+
+type UserAppImput{
+    id:String
+    username:String
+    firstname:String
+    lastname:String
+    contact:String
+    email:String
+    adress:String
+    cin:String,
+    roles:String
+}
+
+
+input ParcoursImput{
+    id:Int
+    formationId:Int
+    userId:String
+    companyId:Int
+    responsableId:String
+    durree:Int
+    unitiDurre:String
+    prix:Float
+    description:String
+}
+input UserImput {
+    id:String,
+    username:String,
+    password :String,
+    firstname:String,
+    lastname:String,
+    contact:String,
+    email:String,
+    adress:String,
+    cin:String,
+    codeParenage:String,
+    pass :String
+
+}
+
+
+
+
+

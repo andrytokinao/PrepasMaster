@@ -39,7 +39,7 @@ public class WebSecurityConfig2 {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers(new AntPathRequestMatcher("/graphql")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/graphiql")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll()
                         .anyRequest().permitAll())
                 .formLogin(d -> {
                     d.permitAll();

@@ -175,4 +175,15 @@ public class UserService {
                 .collect(Collectors.toSet());
         return new UserDetailsDeto(userApp.getUsername(), userApp.getPassword(), permissionNames);
     }
+    public Set<String> getAutorities(String username){
+        UserApp userApp = userRepository.findByUsername(username);
+        if(userApp == null)
+            return new HashSet<>();
+        Set<String> roleApps = userApp.getRolesToList();
+        if (CollectionUtils.isEmpty(roleApps))
+            return new HashSet<>();
+        return roleApps.stream()
+                .flatMap(roleApp -> (ConfigAutorities.getAutorities(roleApp).stream()))
+                .collect(Collectors.toSet());
+    }
 }

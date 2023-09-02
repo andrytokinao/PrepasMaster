@@ -3,7 +3,6 @@ import {Component, OnInit} from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {AuthService} from "../../../service/auth.service";
 import {UserApp} from "../../../index/index-student";
 import {UserConnection} from "../../../index/user-app";
 import {AuthenticationService} from "../../../service/login/auth.service";
@@ -29,8 +28,8 @@ export class LoginModalComponent implements OnInit{
   showFormRegistration:boolean = false ;
 
   userConnection: UserConnection = {
-    password: "0341981972",
-    username: "123",
+    username: "0341981972",
+    password: "123",
     errorMessage :""
   };
 
@@ -38,7 +37,6 @@ export class LoginModalComponent implements OnInit{
   invalidLogin = false;
   loginSuccess = false;
   constructor(
-    private authService: AuthService,
     public dialogRef: MatDialogRef<LoginModalComponent>,
     private router: Router, public fb: FormBuilder,
     private authenticationService: AuthenticationService
@@ -67,22 +65,12 @@ export class LoginModalComponent implements OnInit{
       this.dialogRef.close();
   }
   submitLogin() {
-    this.authenticationService.authenticationService(this.userConnection.username, this.userConnection.password).pipe(first()).subscribe((response: HttpResponse<any>) => {
-      alert("Response ss="+JSON.stringify(response));
-      const jSessionId = response.headers.get('Set-Cookie');
-      if (jSessionId) {
-        const jSessionIdValue = jSessionId.split(';')[0].split('=')[1];
-        console.log('JSESSIONID:', jSessionIdValue);
-        this.invalidLogin = false;
-        this.loginSuccess = true;
-        this.errorLogin = " Login success";
-
-      }else{
-        this.invalidLogin = true;
-        this.loginSuccess = false;
-        this.errorLogin = " Login failed";
+    this.authenticationService.authenticationService(this.userConnection.username, this.userConnection.password);
+    this.authenticationService.getConnectedObservable().subscribe((user)=>{
+      if(user != null){
+        this.dialogRef.close();
       }
-    });
+    })
   }
 
   public showForm(showFormName:string):void{
@@ -118,5 +106,6 @@ export class LoginModalComponent implements OnInit{
       this.showFormRegistration = true ;
     } else {
     }
+
   }
 }

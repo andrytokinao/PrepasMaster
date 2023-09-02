@@ -1,9 +1,12 @@
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {map, switchMap} from 'rxjs/operators';
-import {BehaviorSubject, catchError, Observable} from "rxjs";
+import {BehaviorSubject, catchError, Observable, Subject} from "rxjs";
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators, ɵElement} from "@angular/forms";
 import {API_BASE_URL} from "../../type/constant";
+import {GET_STUDENTS} from "../../graphql.operations";
+import {Apollo} from "apollo-angular";
+import {UserApp} from "../../index/index-student";
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +17,19 @@ export class AuthenticationService {
 
   public username: string = '';
   public password: string = '';
-  private cookieService: any;
-  private jSessionIdValue: string = "";
-  private jSessionIdTemp: string = "";
-
-  constructor(private http: HttpClient, private fb: FormBuilder) {
-
+  public connected:{}={} ;
+  public autorities:[string] =[''];
+  private connectedObservable: Subject<any> = new Subject<any>();
+  private autoritiesObservable: Subject<any> = new Subject<any>();
+  constructor(private http: HttpClient, private fb: FormBuilder,private apollo:Apollo) {
+    this.loadConnectes();
 
   }
 
   private submissionStatusSubject = new BehaviorSubject<boolean>(false);
 
 
-  authenticationService(username: string, password: string):Observable<any> {
+  authenticationService(username: string, password: string):void {
       const headers = new HttpHeaders()
         .set('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/116.0')
         .set('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8')
@@ -49,33 +52,17 @@ export class AuthenticationService {
       body.set('username', username);
       body.set('password', password);
 
-      return this.http.post(`${API_BASE_URL}/login`, body.toString(), { headers, responseType: 'text' });
+      this.http.post(`${API_BASE_URL}/login`, body.toString(), { headers, responseType: 'text' }).subscribe(
+        (result)=>{
+          this.loadConnectes();
+        }
+      );
     }
 
 
   get submissionStatus$(): Observable<boolean> {
     return this.submissionStatusSubject.asObservable();
   }
-
-  postWithJSessionId(jSessionIdValue: string, username: string, password: string): Observable<any> {
-    const url = API_BASE_URL + '/login';
-    const headers = new HttpHeaders({
-      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-    });
-    const body = new HttpParams()
-      .set('username', username)
-      .set('password', password);
-    return this.http.post(url, body.toString(), {headers, observe: 'response'});
-  }
-
-  createBasicAuthToken(username: String, password: String) {
-    return 'Basic ' + window.btoa(username + ":" + password)
-  }
-
-  registerSuccessfulLogin(username: string, password: string) {
-    sessionStorage.setItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME, username)
-  }
-
   logout() {
     sessionStorage.removeItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME);
     this.username = '';
@@ -93,5 +80,34 @@ export class AuthenticationService {
     if (user === null) return ''
     return user
   }
-
+  loadConnectes(){
+    this.http.get(API_BASE_URL + '/api/username').subscribe(
+      data => {
+        this.setConnected(data);
+        this.loadAutorities();
+      });
+  }
+  loadAutorities(){
+    this.http.get(API_BASE_URL + '/api/autorities').subscribe(
+      data => {
+        this.setAutorities(data);
+      });
+  }
+  setConnected(c: any) {
+    this.connected = c;
+    this.connectedObservable.next(this.connected);
+  }
+  setAutorities(e: any) {
+    this.autorities = e;
+    this.autoritiesObservable.next(this.autorities);
+  }
+  getConnectedObservable(): Observable<any> {
+    return this.connectedObservable.asObservable();
+  }
+  getAutoritiesObservable() :Observable<any>{
+    return this.autoritiesObservable.asObservable();
+  }
+  hasAutorities(autorities:[string]):boolean{
+   return this.autorities.some(element => autorities.includes(element));
+  }
 }

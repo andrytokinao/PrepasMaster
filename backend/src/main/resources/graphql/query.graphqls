@@ -1,0 +1,6 @@
+type Query {
+    getUser(username: String!): UserApp,
+    getConnected: UserApp,
+    getStudents:[UserApp]
+    getAutorities : [Autoritie]
+}

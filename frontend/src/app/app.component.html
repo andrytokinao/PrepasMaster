@@ -6,10 +6,10 @@
     <div class="col-md-10 content ">
       <div class="section">
         <div class="section-entete">
-          <span class="user">
+          <span class="user" *ngIf="user" >
             <img src="images/equipe/toky.png" alt="">
-            mon comte
-             <span> FR</span>
+             <span> {{user.firstname}}</span>
+             <span> {{user.lastname}}</span>
            </span>
 
 

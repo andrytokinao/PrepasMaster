@@ -18,7 +18,8 @@ public class ConfigAutorities {
         roleToAutorities.put(
                 ROLE_SYS_ADMIN, Arrays.asList(
                         CAN_VIEW_LIST,
-                        LOGED,CAN_ROLE_VIEW_COMPANY,
+                        LOGED,
+                        CAN_ROLE_VIEW_COMPANY,
                         CAN_ADD_COMPANY,
                         CAN_EDIT_COMPANY,
                         CAN_AFFECT_ROLE));

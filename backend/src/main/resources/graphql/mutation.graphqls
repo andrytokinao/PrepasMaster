@@ -1,0 +1,21 @@
+
+type Mutation {
+    saveUser(userApp:UserImput):UserApp
+    addFormation(
+        userInscrit:String,
+        formations:[String],
+    ):String
+    parainage(
+        userInscrit:String
+        codeParenage:String,
+        userParenage:String
+    ):UserApp
+    payerCompte(
+        userSource:String,
+        userDest :String,
+        typeTransaction:String,
+        confirmation:Float
+        montant:String
+    ):Transaction
+    addParcours(parcours:ParcoursImput) :Parcours
+}
