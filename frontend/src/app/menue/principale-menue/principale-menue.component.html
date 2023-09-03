@@ -7,15 +7,15 @@
         <a [routerLink]="''">Accueil</a>
       </div>
     </li>
-    <li *ngFor="let menu of menus; let i = index" [class.active]="menu.active">
-      <div class="menu" (click)="toggle(i)">
+    <li *ngFor="let menu of menus; let i = index" [class.active]="menu.active" >
+      <div class="menu" (click)="toggle(i)" *ngIf="menu.accessible">
         <i [class]="menu.iconClass"></i>
         {{ menu.name }}
         <i class="fa fa-chevron-down"></i>
       </div>
       <ul class="submenu" #submenu [style.height.px]="menu.active ? submenu.scrollHeight : 0">
         <li *ngFor="let submenu of menu.submenu">
-          <a [routerLink]="submenu.url">{{ submenu.name }}</a>
+          <a *ngIf="submenu.accessible" [routerLink]="submenu.url">{{ submenu.name }}</a>
         </li>
       </ul>
     </li>

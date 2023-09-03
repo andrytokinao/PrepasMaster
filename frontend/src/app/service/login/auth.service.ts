@@ -18,12 +18,11 @@ export class AuthenticationService {
   public username: string = '';
   public password: string = '';
   public connected:{}={} ;
-  public autorities:[string] =[''];
+  public autorities:[string] =[""];
   private connectedObservable: Subject<any> = new Subject<any>();
   private autoritiesObservable: Subject<any> = new Subject<any>();
   constructor(private http: HttpClient, private fb: FormBuilder,private apollo:Apollo) {
     this.loadConnectes();
-
   }
 
   private submissionStatusSubject = new BehaviorSubject<boolean>(false);
@@ -64,9 +63,10 @@ export class AuthenticationService {
     return this.submissionStatusSubject.asObservable();
   }
   logout() {
-    sessionStorage.removeItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME);
-    this.username = '';
-    this.password = '';
+    this.http.get(API_BASE_URL + '/logout').subscribe(
+      data => {
+        this.setConnected({});
+      });
   }
 
   isUserLoggedIn() {
@@ -76,9 +76,11 @@ export class AuthenticationService {
   }
 
   getLoggedInUserName() {
-    let user = sessionStorage.getItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME)
-    if (user === null) return ''
-    return user
+    this.http.get(API_BASE_URL + '/logout').subscribe(
+      data => {
+        this.setAutorities(data);
+        this.loadAutorities();
+      });
   }
   loadConnectes(){
     this.http.get(API_BASE_URL + '/api/username').subscribe(
@@ -107,7 +109,7 @@ export class AuthenticationService {
   getAutoritiesObservable() :Observable<any>{
     return this.autoritiesObservable.asObservable();
   }
-  hasAutorities(autorities:[string]):boolean{
+  hasAutorities(autorities:string[]):boolean{
    return this.autorities.some(element => autorities.includes(element));
   }
 }

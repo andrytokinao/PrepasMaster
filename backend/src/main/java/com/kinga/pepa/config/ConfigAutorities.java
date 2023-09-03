@@ -14,37 +14,25 @@ public class ConfigAutorities {
     private static final Logger logger = LoggerFactory.getLogger(ConfigAutorities.class);
     private static Map<String, List<String>> roleToAutorities = new HashMap<>();
 
-    private static void loadConfiguration(){
-        roleToAutorities.put(
-                ROLE_SYS_ADMIN, Arrays.asList(
-                        CAN_VIEW_LIST,
-                        LOGED,
-                        CAN_ROLE_VIEW_COMPANY,
-                        CAN_ADD_COMPANY,
-                        CAN_EDIT_COMPANY,
-                        CAN_AFFECT_ROLE));
-        roleToAutorities.put(
-                ROLE_ADMIN,
-                Arrays.asList(
-                        CAN_VIEW_LIST,
-                        LOGED,
-                        CAN_ROLE_VIEW_COMPANY,
-                        CAN_EDIT_COMPANY,
-                        CAN_AFFECT_ROLE));
-        roleToAutorities.put(ROLE_RESPONSABLE, Arrays.asList(
-                CAN_VIEW_LIST,
-                LOGED,
-                CAN_ROLE_VIEW_COMPANY,
-                CAN_AFFECT_ROLE));
-        roleToAutorities.put(
-                ROLE_USER,
-                Arrays.asList(
-                        LOGED,
-                        CAN_ROLE_VIEW_COMPANY));
+    private static void loadConfiguration() {
+        List<String> aUser = Arrays.asList(LOGED, CAN_EDIT_PROFILE);
+        List<String> aResponsable = new ArrayList<>(aUser);
+        aResponsable.addAll(Arrays.asList(CAN_VIEW_LIST_USER, CAN_ADD_USER, CAN_CONTROLE_USER, CAN_ADD_PAROURS_USER, CAN_VIEW_COMPANY));
+        List<String> aAdmin = new ArrayList<>(aResponsable);
+        aAdmin.addAll(Arrays.asList(CAN_ADD_NEW_PARCOURS, CAN_EDIT_COMPANY, CAN_AFFECT_ROLE_RESPONSABLE));
+        List<String> aSupAdmin = new ArrayList<>(aAdmin);
+        aSupAdmin.addAll(Arrays.asList(CAN_AFFECT_ROLE_RESPONSABLE,CAN_AFFECT_ROLE_ADMIN, CAN_ADD_NEW_COMPANY, CAN_VIEW_LIST_COMPANY));
+
+        roleToAutorities.put(ROLE_USER, Collections.unmodifiableList(aUser)); // Use unmodifiableList to prevent modifications
+        roleToAutorities.put(ROLE_RESPONSABLE, Collections.unmodifiableList(aResponsable));
+        roleToAutorities.put(ROLE_ADMIN, Collections.unmodifiableList(aAdmin));
+        roleToAutorities.put(ROLE_SUP_ADMIN, Collections.unmodifiableList(aSupAdmin));
     }
-    public static List<String> getAutorities(String role){
-        logger.info("Load autorities for role "+role);
-        if(CollectionUtils.isEmpty(roleToAutorities)){
+
+
+    public static List<String> getAutorities(String role) {
+        logger.info("Load autorities for role " + role);
+        if (CollectionUtils.isEmpty(roleToAutorities)) {
             loadConfiguration();
         }
 

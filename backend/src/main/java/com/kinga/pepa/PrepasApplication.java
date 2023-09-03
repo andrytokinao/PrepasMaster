@@ -5,13 +5,11 @@ import com.kinga.pepa.services.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Arrays;
 
-import static com.kinga.pepa.config.Permission.CAN_VIEW_LIST;
 import static com.kinga.pepa.config.Roles.ROLE_RESPONSABLE;
+import static com.kinga.pepa.config.Roles.ROLE_SUP_ADMIN;
 
 @SpringBootApplication
 public class PrepasApplication {
@@ -24,7 +22,7 @@ public class PrepasApplication {
         userApp.setLastname("Andriamahefasoa");
         userApp.setFirstname("Tokiniaina");
         userApp.setContact("0341981972");
-        userApp.addRolles(Arrays.asList(ROLE_RESPONSABLE));
+        userApp.addRolles(Arrays.asList(ROLE_SUP_ADMIN));
         userApp = userService.save(userApp);
 
     }
