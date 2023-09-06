@@ -7,6 +7,9 @@ import {ComptableModule} from "../comptable/comptable.module";
 import { UsersComponent } from './users/users.component';
 import { ConfigComponent } from './config/config.component';
 import { CompanyComponent } from './company/company.component';
+import {ControleModule} from "../controle/controle.module";
+import { ListComponent } from './company/list/list.component';
+import {FormsModule} from "@angular/forms";
 
 
 
@@ -15,15 +18,18 @@ import { CompanyComponent } from './company/company.component';
     AdminFormationComponent,
     UsersComponent,
     ConfigComponent,
-    CompanyComponent
+    CompanyComponent,
+    ListComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule.forRoot([
-      {path: "company", component: CompanyComponent},
-      {path: "users", component: UsersComponent},
-      {path: "configuration", component: ConfigComponent}
-    ]),
-  ]
+    imports: [
+        CommonModule,
+        ControleModule,
+        RouterModule.forRoot([
+            {path: "company", component: CompanyComponent},
+            {path: "users", component: UsersComponent},
+            {path: "configuration", component: ConfigComponent}
+        ]),
+        FormsModule,
+    ]
 })
 export class AdminModule { }

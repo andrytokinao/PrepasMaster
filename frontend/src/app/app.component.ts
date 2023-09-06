@@ -11,12 +11,12 @@ import {UserApp} from "./index/index-student";
 export class AppComponent {
   autenService:AuthenticationService;
   user:any   ;
-  public autorities:[string] ;
+  public authorities:string[] ;
 
   constructor(aut:AuthenticationService) {
     this.autenService = aut;
     this.user=this.autenService.connected;
-    this.autorities = this.autenService.autorities;
+    this.authorities = this.autenService.authorities;
     this.autenService.getConnectedObservable().subscribe(
       (data)=>{
         this.user = data;
@@ -24,7 +24,7 @@ export class AppComponent {
     );
     this.autenService.getAutoritiesObservable().subscribe(
       (data)=>{
-        this.autorities = data;
+        this.authorities = data;
       }
     );
   }

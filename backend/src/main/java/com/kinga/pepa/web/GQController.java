@@ -1,6 +1,8 @@
 package com.kinga.pepa.web;
 
 import com.kinga.pepa.config.Autorities;
+import com.kinga.pepa.entity.Company;
+import com.kinga.pepa.services.CompanyService;
 import com.kinga.pepa.services.CustomUserDetailsService;
 import com.kinga.pepa.services.UserService;
 import org.slf4j.Logger;
@@ -28,6 +30,8 @@ public class GQController {
     private static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
     @Autowired
     UserService userService;
+    @Autowired
+    CompanyService companyService;
     @QueryMapping
     public  String addFormation(String userInscrit , List<String> formations){
         return "response";
@@ -43,13 +47,24 @@ public class GQController {
     public List<UserApp> getStudents(){
         return userService.findAll();
     }
+
+    @QueryMapping
+    public List<Company> getCompanies(){
+        return companyService.findAll();
+    }
+
     @MutationMapping
     public UserApp saveUser(@Argument UserApp userApp){
         UserApp user = userService.save(userApp);
         user.setContact(separatePhoneNumber(user.getContact()));
         return user;
     }
+    @MutationMapping
+    public Company saveCompany(@Argument Company company){
+        logger.info("Saviny company "+company.getName());
+        return companyService.save(company);
 
+    }
     @GetMapping({"/", "/compte/**", "/etudiants/**","/comptable/**","/admin/**"})
     public String publicRedirection(){
         logger.info("loading page frontend  ");

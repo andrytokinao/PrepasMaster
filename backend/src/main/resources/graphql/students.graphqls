@@ -20,6 +20,12 @@ type Company {
     slogan:String
     description:String
 }
+input CompanyInput {
+    id:Int!
+    name:String
+    slogan:String
+    description:String
+}
 
 type Matiere{
     id:String

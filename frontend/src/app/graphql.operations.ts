@@ -8,4 +8,11 @@ const GET_STUDENTS = gql`
     }
   }
 `;
-export {GET_STUDENTS}
+ const GET_COMPANIES = gql`
+  query{
+    getCompanies{
+      id, name, description, slogan
+    }
+  }
+`;
+export {GET_STUDENTS,GET_COMPANIES}

@@ -40,3 +40,9 @@ export  interface UserApp  {
    pass :Maybe<Scalars["String"]>;
 };
 
+export  interface Company{
+  id:Maybe<Scalars["Int"]>;
+   name:Maybe<Scalars["String"]>;
+   slogan:Maybe<Scalars["String"]>;
+  description :Maybe<Scalars["String"]>;
+}

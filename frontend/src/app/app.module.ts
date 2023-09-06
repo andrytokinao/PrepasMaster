@@ -26,6 +26,7 @@ import {LoginComponent} from "./compte/login/login.component";
 import {ProfileComponent} from "./compte/profile/profile.component";
 import {CompteModule} from "./compte/compte.module";
 import { HomeComponent } from './home/home.component';
+import {ListComponent} from "./admin/company/list/list.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +48,8 @@ import { HomeComponent } from './home/home.component';
       {path: "etudiants/verification", component: VerificationComponent},
       {path: "comptable/transactions", component: TransactionComponent},
       {path: "comptable/etat", component: EtatComponent},
-      {path: "admin/company", component: CompanyComponent},
+      {path: "admin/company/details", component: CompanyComponent},
+      {path: "admin/company/liste", component: ListComponent},
       {path: "admin/config", component: ConfigComponent},
       {path: "admin/users", component: UsersComponent},
       {path: "compte/singin", component: LoginComponent},

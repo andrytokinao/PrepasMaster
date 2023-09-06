@@ -10,7 +10,6 @@ export class StudentService {
   }
 
   saveStudent(userInput: any) {
-    alert(JSON.stringify(userInput));
     return this.apollo.mutate({
       mutation: gql`
         mutation SaveStudent($user: UserImput!) {

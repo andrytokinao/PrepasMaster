@@ -3,4 +3,5 @@ type Query {
     getConnected: UserApp,
     getStudents:[UserApp]
     getAutorities : [Autoritie]
+    getCompanies : [Company]
 }

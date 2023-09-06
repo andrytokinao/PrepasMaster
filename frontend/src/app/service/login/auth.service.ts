@@ -18,7 +18,24 @@ export class AuthenticationService {
   public username: string = '';
   public password: string = '';
   public connected:{}={} ;
-  public autorities:[string] =[""];
+  public authorities: string[] = [
+    "LOGED",
+    "CAN_EDIT_PROFILE",
+    "CAN_VIEW_LIST_COMPANY",
+    "CAN_AFFECT_ROLE_RESPONSABLE",
+    "CAN_AFFECT_ROLE_ADMIN",
+    "CAN_ADD_NEW_PARCOURS",
+    "CAN_EDIT_COMPANY",
+    "CAN_VIEW_LIST_USER",
+    "CAN_ADD_USER",
+    "CAN_CONTROLE_USER",
+    "CAN_ADD_PAROURS_USER",
+    "CAN_VIEW_COMPANY",
+    "CAN_ADD_NEW_COMPANY",
+    "CAN_VIEW_TRANSACTION",
+    "CAN_VIEW_ETAT_FINANCIER"
+  ];
+
   private connectedObservable: Subject<any> = new Subject<any>();
   private autoritiesObservable: Subject<any> = new Subject<any>();
   constructor(private http: HttpClient, private fb: FormBuilder,private apollo:Apollo) {
@@ -100,8 +117,8 @@ export class AuthenticationService {
     this.connectedObservable.next(this.connected);
   }
   setAutorities(e: any) {
-    this.autorities = e;
-    this.autoritiesObservable.next(this.autorities);
+    this.authorities = e;
+    this.autoritiesObservable.next(this.authorities);
   }
   getConnectedObservable(): Observable<any> {
     return this.connectedObservable.asObservable();
@@ -110,6 +127,6 @@ export class AuthenticationService {
     return this.autoritiesObservable.asObservable();
   }
   hasAutorities(autorities:string[]):boolean{
-   return this.autorities.some(element => autorities.includes(element));
+   return this.authorities.some(element => autorities.includes(element));
   }
 }
