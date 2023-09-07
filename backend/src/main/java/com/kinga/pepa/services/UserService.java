@@ -35,6 +35,13 @@ public class UserService {
     CompanyRepository companyRepository;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
+    public List<Poste> findPosteByUsername(String userId) {
+        UserApp userApp = findByUsernamOrContactOrCinOrEmail(userId);
+        return posteRepository.findByUserApp_Id(userApp.getId());
+    }
+    public List<Poste> findPosteByCompany(Integer idCompany) {
+        return posteRepository.findByCompany_Id(idCompany);
+    }
     public void flush() {
         userRepository.flush();
     }

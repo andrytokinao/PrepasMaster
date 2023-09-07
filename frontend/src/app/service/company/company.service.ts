@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import gql from "graphql-tag";
 import {Apollo} from "apollo-angular";
-import {GET_COMPANIES, GET_STUDENTS} from "../../graphql.operations";
+import {ADD_POSTE, GET_COMPANIES, GET_POSTE_BY_COMPANY, GET_STUDENTS} from "../../graphql.operations";
 import {Observable} from "rxjs";
 import {ApolloQueryResult} from "@apollo/client";
 
@@ -32,5 +32,18 @@ export class CompanyService {
       query:GET_COMPANIES
     }).valueChanges;
   }
-
+  getPoste(idCompany:any){
+    return this.apollo
+      .query({
+        query: GET_POSTE_BY_COMPANY,
+        variables: { id: idCompany }
+      })
+  }
+  addPoste(poste:any){
+    return this.apollo
+      .mutate({
+        mutation: ADD_POSTE,
+        variables: { poste: poste }
+      })
+  }
 }

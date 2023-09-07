@@ -38,25 +38,23 @@
 
       <div class="col-md-4 company-details">
         <h2>Informations sur l'Entreprise</h2>
-        <p><strong>Nom de l'Entreprise:</strong> Nom de l'entreprise XYZ</p>
-        <p><strong>Adresse:</strong> 123, Rue de l'Entreprise, Ville</p>
-        <p><strong>Numéro de Téléphone:</strong> +1 123-456-7890</p>
+        <p *ngFor="let p of postes"><strong>{{p.poste}}: </strong>{{p.userApp.firstname}} {{p.userApp.lastname}}</p>
         <form>
           <div class="form-group">
-            <label for="responsable">Ajouter une formation </label>
-            <input type="text" class="form-control" id="responsable" placeholder="Ajouter une responsable ">
+            <label for="responsable">Ajouter le responsable</label>
+            <input type="text" class="form-control" id="responsable" placeholder="Ajouter une responsable " [(ngModel)]="currentPoste.username" [ngModelOptions]="{standalone: true}">
           </div>
 
-          <button type="submit" class="btn btn-primary">Enregistrer les Modifications</button>
+          <button type="submit" class="btn btn-primary" (click)="addResponsable()" >Enregistrer </button>
         </form>
         <form>
           <div class="form-group">
-            <label for="companyName">Ajouter une formation </label>
-            <input type="text" class="form-control" id="formation" placeholder="Entrez le nom de formation">
+            <label for="companyName">Ajouter un admin </label>
+            <input type="text" class="form-control" id="formation" placeholder="Ajouter un admin " [(ngModel)]="currentPoste.username" [ngModelOptions]="{standalone: true}">
           </div>
 
           <!-- Ajoutez d'autres champs de formulaire ici -->
-          <button type="submit" class="btn btn-primary">Enregistrer les Modifications</button>
+          <button type="submit" class="btn btn-primary" (click)="addAdmin()">Enregistrer</button>
         </form>
       </div>
     </div>

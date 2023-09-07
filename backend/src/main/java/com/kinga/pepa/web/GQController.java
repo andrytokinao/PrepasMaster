@@ -62,10 +62,20 @@ public class GQController {
         return user;
     }
     @MutationMapping
-    public List<Poste> addPoste(@Argument PosteDto posteDto){
-        logger.info("Affectation  "+posteDto.getUsername()+ " "+posteDto.getPoste() +" in company#"+posteDto.getCompanyId());
-        return userService.addNewPoste(posteDto);
+    public List<Poste> addPoste(@Argument PosteDto poste){
+        logger.info("Affectation  "+poste.getUsername()+ " "+poste.getPoste() +" in company#"+poste.getCompanyId());
+        return userService.addNewPoste(poste);
 
+    }
+    @QueryMapping
+    public List<Poste> getPosteByUser(@Argument String username){
+        logger.info(" Finding poste by username : "+username);
+        return userService.findPosteByUsername(username);
+    }
+    @QueryMapping
+    public List<Poste> getPosteCompany(@Argument Integer idCompany){
+        logger.info(" Finding poste by company : "+idCompany);
+        return userService.findPosteByCompany(idCompany);
     }
     @MutationMapping
     public Company saveCompany(@Argument Company company){
