@@ -1,10 +1,10 @@
-package com.kinga.pepa.deo;
+package com.kinga.pepa.dto;
 
 import com.kinga.pepa.entity.UserApp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

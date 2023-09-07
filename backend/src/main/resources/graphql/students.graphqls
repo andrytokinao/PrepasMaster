@@ -26,6 +26,24 @@ input CompanyInput {
     slogan:String
     description:String
 }
+input  PosteImput {
+    id:Int
+    debut:String
+    fin : String
+    description:String
+    poste:String
+    companyId:Int
+    username:String,
+}
+type Poste{
+    id:Int
+    debut:String
+    fin : String
+    description:String
+    poste:String
+    company:Company
+    userApp:UserApp
+}
 
 type Matiere{
     id:String

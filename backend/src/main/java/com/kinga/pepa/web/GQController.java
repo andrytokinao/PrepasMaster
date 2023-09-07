@@ -1,7 +1,9 @@
 package com.kinga.pepa.web;
 
 import com.kinga.pepa.config.Autorities;
+import com.kinga.pepa.dto.PosteDto;
 import com.kinga.pepa.entity.Company;
+import com.kinga.pepa.entity.Poste;
 import com.kinga.pepa.services.CompanyService;
 import com.kinga.pepa.services.CustomUserDetailsService;
 import com.kinga.pepa.services.UserService;
@@ -58,6 +60,12 @@ public class GQController {
         UserApp user = userService.save(userApp);
         user.setContact(separatePhoneNumber(user.getContact()));
         return user;
+    }
+    @MutationMapping
+    public List<Poste> addPoste(@Argument PosteDto posteDto){
+        logger.info("Affectation  "+posteDto.getUsername()+ " "+posteDto.getPoste() +" in company#"+posteDto.getCompanyId());
+        return userService.addNewPoste(posteDto);
+
     }
     @MutationMapping
     public Company saveCompany(@Argument Company company){

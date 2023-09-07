@@ -1,26 +1,24 @@
 package com.kinga.pepa.services;
 
 import com.kinga.pepa.config.ConfigAutorities;
-import com.kinga.pepa.deo.UserAppDto;
-import com.kinga.pepa.deo.UserDetailsDeto;
-import com.kinga.pepa.config.Permission;
-import com.kinga.pepa.config.Roles;
+import com.kinga.pepa.dto.PosteDto;
+import com.kinga.pepa.dto.UserDetailsDeto;
+import com.kinga.pepa.entity.Company;
+import com.kinga.pepa.entity.Poste;
 import com.kinga.pepa.entity.UserApp;
+import com.kinga.pepa.repository.CompanyRepository;
+import com.kinga.pepa.repository.PosteRepository;
 import com.kinga.pepa.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.kinga.pepa.config.Roles.ROLE_USER;
@@ -31,6 +29,10 @@ import static com.kinga.pepa.utils.KingaUtils.*;
 public class UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    PosteRepository posteRepository;
+    @Autowired
+    CompanyRepository companyRepository;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public void flush() {
@@ -45,6 +47,30 @@ public class UserService {
         return userRepository.saveAllAndFlush(entities);
     }
 
+    public List<Poste> addNewPoste(PosteDto p){
+        if(p.getCompanyId() == null || !companyRepository.existsById(p.getCompanyId())){
+            throw new RuntimeException("Please make company valable");
+        }
+        if(StringUtils.isEmpty(p.getUsername()) ){
+            throw new RuntimeException("Please make user valable");
+        }
+
+        UserApp userApp = findByUsernamOrContactOrCinOrEmail(p.getUsername());
+        if(userApp == null)  {
+            throw new RuntimeException("User not found");
+        }
+        Company company = companyRepository.getById(p.getCompanyId());
+        userApp.addRolles(p.getPoste());
+        save(userApp);
+        Poste poste = new Poste();
+        poste.setDebut(new Date());
+        poste.setDescription(p.getDescription());
+        poste.setPoste(p.getPoste());
+        poste.setUserApp(userApp);
+        poste.setCompany(company);
+        posteRepository.save(poste);
+        return posteRepository.findByUserApp_Id(userApp.getId());
+    }
     @Deprecated
     public void deleteInBatch(Iterable<UserApp> entities) {
         userRepository.deleteInBatch(entities);
