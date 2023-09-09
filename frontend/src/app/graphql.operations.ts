@@ -16,8 +16,8 @@ const GET_STUDENTS = gql`
   }
 `;
 const GET_POSTE_BY_COMPANY = gql`
-  query getPosteCompany($id: Int!) {
-    getPosteCompany(idCompany: $id) {
+  query getPosteCompany($idCompany: Int!) {
+    getPosteCompany(idCompany: $idCompany) {
       id
       debut
       poste

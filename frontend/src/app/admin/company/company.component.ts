@@ -27,22 +27,16 @@ export class CompanyComponent {
 
   constructor(public cs: CompanyService) {
     this.companyService = cs;
+    this.companyService.companyStatus$.subscribe(
+      (data)=>{
+        this.company=data;
+
+      }
+    )
   }
 
   saveCompany() {
-    alert(JSON.stringify(this.company));
-    this.companyService.save(stripTypename(this.company)).subscribe(
-      (r: any) => {
-        this.company = r.data.saveCompany;
-
-        this.companyService.getPoste(this.company.id).subscribe(
-          (rp: any) => {
-            this.postes = rp.data.getPosteCompany;
-            alert(JSON.stringify(this.postes));
-          }
-        )
-      }
-    )
+    this.companyService.save(stripTypename(this.company));
   }
 
   addAdmin() {
