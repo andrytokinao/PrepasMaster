@@ -5,23 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Date;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Company {
+public class Inscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private String slogan;
-    private String description ;
-    @OneToMany(mappedBy = "company")
-    private List<Inscription> inscriptions;
-    @OneToMany(mappedBy = "company")
-    private List<Poste> postes;
-
+    @ManyToOne
+    private UserApp responsable;
+    @ManyToOne
+    private UserApp userApp;
+    @ManyToOne
+    private Company company;
+    private Date date;
 
 }

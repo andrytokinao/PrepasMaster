@@ -19,6 +19,11 @@ public class CompanyService {
     @Autowired
     CompanyRepository companyRepository;
 
+    @Deprecated
+    public Company getById(Integer integer) {
+        return companyRepository.getById(integer);
+    }
+
     public Company getReferenceById(Integer integer) {
         return companyRepository.getReferenceById(integer);
     }

@@ -4,6 +4,7 @@ type Query {
     getStudents:[UserApp]
     getAutorities : [Autoritie]
     getCompanies : [Company]
+    getCompanyById(idCompany:Int) : Company
     getPosteByUser(username:String!):[Poste]
     getPosteCompany(idCompany:Int):[Poste]
 }

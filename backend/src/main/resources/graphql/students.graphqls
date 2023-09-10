@@ -19,6 +19,7 @@ type Company {
     name:String
     slogan:String
     description:String
+    postes:[Poste]
 }
 input CompanyInput {
     id:Int!
@@ -58,8 +59,9 @@ type UserApp{
     contact:String
     email:String
     adress:String
-    cin:String,
+    cin:String
     roles:String
+    postes:[Poste]
 }
 type Compte {
     id:String,
@@ -70,14 +72,15 @@ type Compte {
 
 type UserAppImput{
     id:String
-    username:String
     firstname:String
     lastname:String
     contact:String
     email:String
     adress:String
     cin:String,
-    roles:String
+    idCompany:Int,
+    userResponsable:UserApp
+
 }
 
 

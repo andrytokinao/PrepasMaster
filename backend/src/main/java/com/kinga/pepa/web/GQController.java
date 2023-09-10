@@ -45,7 +45,7 @@ public class GQController {
         return userService.findByUsernamOrContactOrCinOrEmail(username);
     }
     @QueryMapping
-    @Autorities.CanViewList
+   // @Autorities.CanViewList
     public List<UserApp> getStudents(){
         return userService.findAll();
     }
@@ -62,9 +62,16 @@ public class GQController {
         return user;
     }
     @MutationMapping
-    public List<Poste> addPoste(@Argument PosteDto poste){
+    public List<Poste> addPosteUser(@Argument PosteDto poste){
         logger.info("Affectation  "+poste.getUsername()+ " "+poste.getPoste() +" in company#"+poste.getCompanyId());
         return userService.addNewPoste(poste);
+
+    }
+    @MutationMapping
+    public List<Poste> addPosteCompany(@Argument PosteDto poste){
+        logger.info("Affectation  "+poste.getUsername()+ " "+poste.getPoste() +" in company#"+poste.getCompanyId());
+        userService.addNewPoste(poste);
+        return userService.findPosteByCompany(poste.getCompanyId());
 
     }
     @QueryMapping
@@ -80,8 +87,13 @@ public class GQController {
     @MutationMapping
     public Company saveCompany(@Argument Company company){
         logger.info("Saviny company "+company.getName());
-        return companyService.save(company);
-
+        company = companyService.save(company);
+        return companyService.getById(company.getId());
+    }
+    @QueryMapping
+    public Company getCompanyById(@Argument Integer idCompany){
+        logger.info("Geting company# "+idCompany);
+        return companyService.getById(idCompany);
     }
     @GetMapping({"/", "/compte/**", "/etudiants/**","/comptable/**","/admin/**"})
     public String publicRedirection(){

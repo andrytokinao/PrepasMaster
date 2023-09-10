@@ -12,7 +12,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 
-
+import jakarta.persistence.*;
 @Data
 @NoArgsConstructor
 @Entity
@@ -31,6 +31,8 @@ public class UserApp {
     private String cin;
     private String roles;
     private String pass;
+    @OneToMany(mappedBy = "userApp")
+    private List<Poste> postes;
 
     public Set<String> getRolesToList() {
         return (StringUtils.isEmpty(roles) ? new HashSet<>() : new HashSet<String>(Arrays.asList(roles.split(" , "))));

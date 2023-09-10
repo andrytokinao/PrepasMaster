@@ -2,6 +2,8 @@ package com.kinga.pepa.services;
 
 import com.kinga.pepa.config.ConfigAutorities;
 import com.kinga.pepa.dto.PosteDto;
+import com.kinga.pepa.dto.UserAppDto;
+import com.kinga.pepa.dto.UserAppInput;
 import com.kinga.pepa.dto.UserDetailsDeto;
 import com.kinga.pepa.entity.Company;
 import com.kinga.pepa.entity.Poste;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -117,7 +120,17 @@ public class UserService {
     public List<UserApp> findAll() {
         return userRepository.findAll();
     }
+    @Transactional
+    public UserApp addUser(UserAppDto userAppDto){
+        String userResponsable = userAppDto.getUserResponsable();
+        Integer idCompany = userAppDto.getIdCompany();
+        Company company = companyRepository.getById(idCompany);
+        // TODO verification role user in company
+        UserApp userApp = this.save(userAppDto);
+        // TODO Save inscription by in Company
+        return userApp;
 
+    }
     public <S extends UserApp> S save(S entity) {
         if (!StringUtils.isEmpty(entity.getUsername())) {
             UserApp userApp = userRepository.findByUsername(entity.getUsername());

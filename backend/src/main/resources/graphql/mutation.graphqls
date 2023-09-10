@@ -19,7 +19,9 @@ type Mutation {
     ):Transaction
     addParcours(parcours:ParcoursImput) :Parcours
     saveCompany(company:CompanyInput) :Company
-    addPoste(poste:PosteImput) :[Poste]
+    addPosteCompany(poste:PosteImput) :[Poste]
+    addPosteUser(poste:PosteImput) :[Poste]
+
 }
 
 

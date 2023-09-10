@@ -3,41 +3,34 @@
     <div class="list ">
       <div class="list-group" >
         companies
-      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let c of companies">
+      <a  class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let c of companies">
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">{{c.name}}</h5>
-          <small class="text-muted">3 days ago</small>
+          <small class="text-muted"  (click)="select(c.id)"> Select </small>
         </div>
-        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-        <small class="text-muted">Donec id elit non mi porta.</small>
+        <p class="mb-1">{{c.slogan}}</p>
+        <small class="text-muted">{{c.description}}</small>
       </a>
 
     </div>
     </div>
-    <div class="details" id="details">
-      <div class="col-md-4 company-details">
+    <div class="details row" id="details">
+      <div class="col-md-6 company-details">
         <h2>Informations sur l'Entreprise</h2>
-        <p><strong>Nom de l'Entreprise:</strong> Nom de l'entreprise XYZ</p>
-        <p><strong>Adresse:</strong> 123, Rue de l'Entreprise, Ville</p>
-        <p><strong>Numéro de Téléphone:</strong> +1 123-456-7890</p>
-        <form>
-          <div class="form-group">
-            <label for="responsable">Ajouter une formation </label>
-            <input type="text" class="form-control" id="responsable" placeholder="Ajouter une responsable ">
-          </div>
+        <p><strong>Nom de l'Entreprise:</strong> {{company.name}}</p>
+        <p><strong>Adresse:</strong> company.address</p>
+        <p><strong>Numéro de Téléphone:</strong> company.contact</p>
+        <p *ngFor="let p of postes"><strong>{{p.poste}}: </strong>{{p.userApp.firstname}} {{p.userApp.lastname}}</p>
+      </div>
+      <div class="col-md-6 company-details">
+        <h2>Formation :  </h2>
+        <p *ngFor="let f of formations"><strong>{{f.name}}: </strong>{{f.description}} {{f.address}}</p>
 
-          <button type="submit" class="btn btn-primary">Enregistrer les Modifications</button>
-        </form>
-        <form>
-          <div class="form-group">
-            <label >Ajouter une formation </label>
-            <input type="text" class="form-control" id="formation" placeholder="Entrez le nom de formation">
-          </div>
+      </div>
+      <small class="text-muted"  (click)="edit(company)"> Editer </small>
 
-          <!-- Ajoutez d'autres champs de formulaire ici -->
-          <button type="submit" class="btn btn-primary">Enregistrer les Modifications</button>
-        </form>
-      </div>    </div>
+    </div>
+
   </div>
 
 

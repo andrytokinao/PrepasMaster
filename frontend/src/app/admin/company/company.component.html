@@ -41,21 +41,14 @@
         <p *ngFor="let p of postes"><strong>{{p.poste}}: </strong>{{p.userApp.firstname}} {{p.userApp.lastname}}</p>
         <form>
           <div class="form-group">
-            <label for="responsable">Ajouter le responsable</label>
+            <label for="responsable">Affcter un personne </label>
             <input type="text" class="form-control" id="responsable" placeholder="Ajouter une responsable " [(ngModel)]="currentPoste.username" [ngModelOptions]="{standalone: true}">
           </div>
 
-          <button type="submit" class="btn btn-primary" (click)="addResponsable()" >Enregistrer </button>
+          <button type="submit" class="btn btn-primary" (click)="addResponsable()" >Responsable </button>
+          <button type="submit" class="btn btn-primary" (click)="addAdmin()">Admin</button>
         </form>
-        <form>
-          <div class="form-group">
-            <label for="companyName">Ajouter un admin </label>
-            <input type="text" class="form-control" id="formation" placeholder="Ajouter un admin " [(ngModel)]="currentPoste.username" [ngModelOptions]="{standalone: true}">
-          </div>
 
-          <!-- Ajoutez d'autres champs de formulaire ici -->
-          <button type="submit" class="btn btn-primary" (click)="addAdmin()">Enregistrer</button>
-        </form>
       </div>
     </div>
   </div>

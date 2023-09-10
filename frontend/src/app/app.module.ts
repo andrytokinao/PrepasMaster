@@ -48,7 +48,7 @@ import {ListComponent} from "./admin/company/list/list.component";
       {path: "etudiants/verification", component: VerificationComponent},
       {path: "comptable/transactions", component: TransactionComponent},
       {path: "comptable/etat", component: EtatComponent},
-      {path: "admin/company/details", component: CompanyComponent},
+      {path: "admin/company/details/:id", component: CompanyComponent},
       {path: "admin/company/liste", component: ListComponent},
       {path: "admin/config", component: ConfigComponent},
       {path: "admin/users", component: UsersComponent},
