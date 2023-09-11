@@ -1,6 +1,7 @@
 package com.kinga.pepa.utils;
 import com.kinga.pepa.entity.UserApp;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.StringUtils;
 
 import java.util.Random;
 import java.util.StringJoiner;
@@ -8,6 +9,8 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 public class KingaUtils {
     public static boolean isValidPhoneNumber(String phoneNumber) {
+        if(phoneNumber== null || phoneNumber.length()==0)
+            return true;
         String cleanedPhoneNumber = phoneNumber.replaceAll("\\s+", "").replaceAll("\\+", "");
         String regex = "^(261|0)(32|33|34|38)\\d{2}\\d{3}\\d{2}$";
         Pattern pattern = Pattern.compile(regex);
@@ -16,6 +19,9 @@ public class KingaUtils {
     }
 
     public static String cleanPhonNumber(String phoneNumber){
+        if (phoneNumber == null || phoneNumber.length() == 0) {
+            return "";
+        }
         String cleanedPhoneNumber = phoneNumber.replaceAll("\\s+", "");
         if(cleanedPhoneNumber.length()<9){
             throw new RuntimeException("Phone number "+phoneNumber +" is not correct");
@@ -23,6 +29,8 @@ public class KingaUtils {
         return  "0"+(cleanedPhoneNumber.substring(cleanedPhoneNumber.length() - 9));
     }
     public static String separatePhoneNumber(String phoneNumber) {
+        if(StringUtils.isEmpty(phoneNumber))
+            return "";
         int[] insertIndices = {3, 5, 8};
         String cleanPhone = cleanPhonNumber(phoneNumber);
         StringBuilder stringBuilder = new StringBuilder(cleanPhone);

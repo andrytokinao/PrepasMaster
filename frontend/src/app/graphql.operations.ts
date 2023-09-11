@@ -72,11 +72,35 @@ const GET_COMPANY_BY_ID = gql`
     }
   }
 `;
+const ADD_USER = gql`
+  mutation AddUser($user:UserImput) {
+    addUser(user: $user) {
+      id
+      lastname
+      firstname
+      contact
+      cin
+    }
+  }
+`;
+const GET_USER_BY_INSCRIPTION = gql`
+  query findDistinctByInscriptionCompany_Id($idCompany:Int) {
+    findDistinctByInscriptionCompany_Id(idCompany: $idCompany) {
+      id
+      lastname
+      firstname
+      contact
+      cin
+    }
+  }
+`;
 export {
   GET_STUDENTS,
   GET_COMPANIES,
   GET_POSTE_BY_COMPANY,
   ADD_POSTE_COMPANY,
   SAVE_COMPANY,
-  GET_COMPANY_BY_ID
+  GET_COMPANY_BY_ID,
+  ADD_USER,
+  GET_USER_BY_INSCRIPTION
 }

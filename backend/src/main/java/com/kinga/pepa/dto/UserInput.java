@@ -4,11 +4,13 @@ import com.kinga.pepa.entity.UserApp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Data
-public class UserAppDto extends UserApp {
+public class UserInput  {
     private String id;
     private String firstname;
     private String lastname;
@@ -19,4 +21,8 @@ public class UserAppDto extends UserApp {
     private Integer idCompany;
     private String userResponsable ;
 
+    @Override
+    public UserApp clone() {
+        return new UserApp(this.getId(),this.getFirstname(),this.getLastname(),this.getContact(),this.getEmail(),this.getAdress(),this.getCin());
+    }
 }

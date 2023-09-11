@@ -3,6 +3,7 @@ import { Component, OnInit, Input } from "@angular/core";
 import {Menu} from "../type/Menu";
 import {Config} from "../type";
 import {AuthenticationService} from "../../service/login/auth.service";
+import {CompanyService} from "../../service/company/company.service";
 
 @Component({
   selector: 'app-principale-menue',
@@ -13,7 +14,7 @@ export class PrincipaleMenueComponent implements OnInit {
 
   @Input() options : Config = { multi: false };
   authService :AuthenticationService;
-  constructor(au:AuthenticationService) {
+  constructor(au:AuthenticationService,private companyService:CompanyService) {
     this.authService=au;
     this.menus= this.initMenue();
     this.authService.getAutoritiesObservable().subscribe(

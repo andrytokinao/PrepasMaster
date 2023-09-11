@@ -1,7 +1,7 @@
 package com.kinga.pepa.web;
 
-import com.kinga.pepa.config.Autorities;
 import com.kinga.pepa.dto.PosteDto;
+import com.kinga.pepa.dto.UserInput;
 import com.kinga.pepa.entity.Company;
 import com.kinga.pepa.entity.Poste;
 import com.kinga.pepa.services.CompanyService;
@@ -10,18 +10,13 @@ import com.kinga.pepa.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.kinga.pepa.entity.UserApp;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -62,10 +57,13 @@ public class GQController {
         return user;
     }
     @MutationMapping
+    public List<UserApp> addUser(@Argument UserInput user){
+        return userService.addUser(user);
+    }
+    @MutationMapping
     public List<Poste> addPosteUser(@Argument PosteDto poste){
         logger.info("Affectation  "+poste.getUsername()+ " "+poste.getPoste() +" in company#"+poste.getCompanyId());
         return userService.addNewPoste(poste);
-
     }
     @MutationMapping
     public List<Poste> addPosteCompany(@Argument PosteDto poste){
@@ -95,10 +93,22 @@ public class GQController {
         logger.info("Geting company# "+idCompany);
         return companyService.getById(idCompany);
     }
+    @QueryMapping
+    public List<UserApp> findDistinctByParcoursCompany(@Argument  Integer idCompany) {
+        return userService.findDistinctByParcoursCompany(idCompany);
+    }
+    @QueryMapping
+    public List<UserApp> findDistinctByInscriptionCompany_Id(@Argument  Integer idCompany) {
+        return userService.findDistinctByInscriptionCompany_Id(idCompany);
+    }
+
     @GetMapping({"/", "/compte/**", "/etudiants/**","/comptable/**","/admin/**"})
     public String publicRedirection(){
         logger.info("loading page frontend  ");
         return "/index.html";
     }
+
+
+
 
 }

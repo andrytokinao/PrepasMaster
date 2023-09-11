@@ -7,4 +7,6 @@ type Query {
     getCompanyById(idCompany:Int) : Company
     getPosteByUser(username:String!):[Poste]
     getPosteCompany(idCompany:Int):[Poste]
+    findDistinctByParcoursCompany(idCompany:Int):[UserApp]
+    findDistinctByInscriptionCompany_Id(idCompany:Int):[UserApp]
 }

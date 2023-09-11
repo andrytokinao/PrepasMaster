@@ -70,7 +70,7 @@ type Compte {
     user:UserApp
 }
 
-type UserAppImput{
+input UserAppImput{
     id:String
     firstname:String
     lastname:String
@@ -79,7 +79,8 @@ type UserAppImput{
     adress:String
     cin:String,
     idCompany:Int,
-    userResponsable:UserApp
+    userResponsable:String
+    codeParenage:String,
 
 }
 
@@ -102,11 +103,12 @@ input UserImput {
     firstname:String,
     lastname:String,
     contact:String,
+    cin:String,
     email:String,
     adress:String,
-    cin:String,
     codeParenage:String,
-    pass :String
+    idCompany:Int,
+    userResponsable:String
 }
 
 

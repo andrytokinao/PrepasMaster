@@ -45,7 +45,7 @@ export class CompanyComponent implements OnInit {
   }
 
   saveCompany() {
-    this.companyService.save(stripTypename(this.company));
+    this.companyService.saveCompany(stripTypename(this.company));
   }
 
   addAdmin() {

@@ -21,6 +21,7 @@ type Mutation {
     saveCompany(company:CompanyInput) :Company
     addPosteCompany(poste:PosteImput) :[Poste]
     addPosteUser(poste:PosteImput) :[Poste]
+    addUser(user:UserImput):[UserApp]
 
 }
 

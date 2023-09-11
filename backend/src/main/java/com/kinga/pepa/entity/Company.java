@@ -22,6 +22,10 @@ public class Company {
     private List<Inscription> inscriptions;
     @OneToMany(mappedBy = "company")
     private List<Poste> postes;
+    @OneToMany
+    private List<Parcour> parcours;
+    @OneToMany
+    private List<Formation> formations;
 
 
 }

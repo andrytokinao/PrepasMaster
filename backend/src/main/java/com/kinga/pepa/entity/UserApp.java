@@ -1,10 +1,7 @@
 package com.kinga.pepa.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -15,8 +12,9 @@ import java.util.*;
 import jakarta.persistence.*;
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class UserApp {
+public class UserApp implements Cloneable{
     private static final Logger logger = LoggerFactory.getLogger(UserApp.class);
     @Id
     private String id;
@@ -31,8 +29,22 @@ public class UserApp {
     private String cin;
     private String roles;
     private String pass;
+    @OneToOne(mappedBy = "userApp")
+    private Inscription inscription;
     @OneToMany(mappedBy = "userApp")
     private List<Poste> postes;
+    @OneToMany
+    private List<Parcour> parcours;
+
+    public UserApp(String id, String firstname, String lastname, String contact, String email, String adress, String cin) {
+        this.setId(id);
+        this.setFirstname(firstname);
+        this.setLastname(lastname);
+        this.setContact(contact);
+        this.setAdress(adress);
+        this.setCin(cin);
+        this.setEmail(email);
+    }
 
     public Set<String> getRolesToList() {
         return (StringUtils.isEmpty(roles) ? new HashSet<>() : new HashSet<String>(Arrays.asList(roles.split(" , "))));
@@ -51,5 +63,15 @@ public class UserApp {
         this.roles = String.join(",", rolesExist);
         logger.info("Adding roles "+roles);
         return this.roles;
+    }
+    @Override
+    public UserApp clone() {
+        try {
+            UserApp clone = (UserApp) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

@@ -1,20 +1,32 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Apollo} from "apollo-angular";
-import {GET_STUDENTS} from "../../graphql.operations";
+import {GET_STUDENTS, GET_USER_BY_INSCRIPTION} from "../../graphql.operations";
 import {EtidStudentModalComponent} from "../etid-student-modal/etid-student-modal.component";
 import {MatDialog} from "@angular/material/dialog";
 import {UserApp} from "../../index/index-student";
 import {UserConnection} from "../../index/user-app";
+import {ActivatedRoute, Router} from "@angular/router";
+import {StudentService} from "../../service/student/student.service";
 
 @Component({
   selector: 'app-liste-students',
   templateUrl: './listes.students.component.html',
   styleUrls: ['./listes.students.component.css']
 })
-export class ListesStudentsComponent {
+export class ListesStudentsComponent implements OnInit{
   students :any[]=[];
   error : any;
-  constructor(private apollo:Apollo,public dialog: MatDialog) {}
+  private idCompany: number=0;
+  constructor(private apollo:Apollo,public dialog: MatDialog,private activatedRoute:ActivatedRoute,private studentService:StudentService,private router: Router) {
+    const updatedURL:string = this.router.createUrlTree([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { company: '1' },
+      queryParamsHandling: 'merge',
+    }).toString();
+
+    this.router.navigateByUrl("updatedURL");
+  }
+
 
   ngOnInit(): void {
     this.apollo.watchQuery({
@@ -24,6 +36,16 @@ export class ListesStudentsComponent {
         this.error = error;
       }
     );
+    this.studentService.studentsStatus$.subscribe(
+      (data:any)=>{
+        this.students = data;
+      }
+    );
+
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.idCompany =Number( params['company']);
+      this.studentService.findDistinctByInscriptionCompany_Id(this.idCompany);
+    });
   }
 
   openDialog(student:UserApp): void {
@@ -35,7 +57,7 @@ export class ListesStudentsComponent {
     },);
 
     dialogRef.afterClosed().subscribe(result => {
-      // Logique après la fermeture de la boîte de dialogue
+      this.studentService.findDistinctByInscriptionCompany_Id(this.idCompany);
     });
   }
 

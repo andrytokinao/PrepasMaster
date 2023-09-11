@@ -16,7 +16,7 @@ import {ApolloQueryResult} from "@apollo/client";
   providedIn: 'root'
 })
 export class CompanyService {
-  public company: any;
+  public company: any={};
   public postes : any;
   private companyObservable: Subject<any> = new Subject<any>();
   private postesObservable: Subject<any> = new Subject<any>();
@@ -29,9 +29,10 @@ export class CompanyService {
   }
 
   constructor(private apollo: Apollo) {
+    this.company.id=1;
   }
 
-  save(company: any) {
+  saveCompany(company: any) {
     const companyImput = company;
     alert("aa" + JSON.stringify(companyImput));
     delete companyImput.postes;
@@ -95,4 +96,5 @@ export class CompanyService {
       }
     )
   }
+
 }

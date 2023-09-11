@@ -2,13 +2,14 @@ package com.kinga.pepa.services;
 
 import com.kinga.pepa.config.ConfigAutorities;
 import com.kinga.pepa.dto.PosteDto;
-import com.kinga.pepa.dto.UserAppDto;
-import com.kinga.pepa.dto.UserAppInput;
+import com.kinga.pepa.dto.UserInput;
 import com.kinga.pepa.dto.UserDetailsDeto;
 import com.kinga.pepa.entity.Company;
+import com.kinga.pepa.entity.Inscription;
 import com.kinga.pepa.entity.Poste;
 import com.kinga.pepa.entity.UserApp;
 import com.kinga.pepa.repository.CompanyRepository;
+import com.kinga.pepa.repository.InscriptionRepository;
 import com.kinga.pepa.repository.PosteRepository;
 import com.kinga.pepa.repository.UserRepository;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -36,15 +38,19 @@ public class UserService {
     PosteRepository posteRepository;
     @Autowired
     CompanyRepository companyRepository;
+    @Autowired
+    InscriptionRepository inscriptionRepository;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public List<Poste> findPosteByUsername(String userId) {
         UserApp userApp = findByUsernamOrContactOrCinOrEmail(userId);
         return posteRepository.findByUserApp_Id(userApp.getId());
     }
+
     public List<Poste> findPosteByCompany(Integer idCompany) {
         return posteRepository.findByCompany_Id(idCompany);
     }
+
     public void flush() {
         userRepository.flush();
     }
@@ -57,16 +63,16 @@ public class UserService {
         return userRepository.saveAllAndFlush(entities);
     }
 
-    public List<Poste> addNewPoste(PosteDto p){
-        if(p.getCompanyId() == null || !companyRepository.existsById(p.getCompanyId())){
+    public List<Poste> addNewPoste(PosteDto p) {
+        if (p.getCompanyId() == null || !companyRepository.existsById(p.getCompanyId())) {
             throw new RuntimeException("Please make company valable");
         }
-        if(StringUtils.isEmpty(p.getUsername()) ){
+        if (StringUtils.isEmpty(p.getUsername())) {
             throw new RuntimeException("Please make user valable");
         }
 
         UserApp userApp = findByUsernamOrContactOrCinOrEmail(p.getUsername());
-        if(userApp == null)  {
+        if (userApp == null) {
             throw new RuntimeException("User not found");
         }
         Company company = companyRepository.getById(p.getCompanyId());
@@ -81,6 +87,7 @@ public class UserService {
         posteRepository.save(poste);
         return posteRepository.findByUserApp_Id(userApp.getId());
     }
+
     @Deprecated
     public void deleteInBatch(Iterable<UserApp> entities) {
         userRepository.deleteInBatch(entities);
@@ -120,18 +127,35 @@ public class UserService {
     public List<UserApp> findAll() {
         return userRepository.findAll();
     }
+
     @Transactional
-    public UserApp addUser(UserAppDto userAppDto){
-        String userResponsable = userAppDto.getUserResponsable();
-        Integer idCompany = userAppDto.getIdCompany();
+    public List<UserApp> addUser(UserInput userInput) {
+        logger.info("Insciption " + userInput.toString());
+        String userResponsable = userInput.getUserResponsable();
+        Integer idCompany = userInput.getIdCompany();
+        UserApp responsable = findByUsernamOrContactOrCinOrEmail(userResponsable);
         Company company = companyRepository.getById(idCompany);
+        if (!companyRepository.existsById(idCompany)) {
+            throw new RuntimeException("Company " + idCompany + " not found");
+        }
+        if (company == null) {
+            throw new RuntimeException("User " + userResponsable + " not found ");
+        }
+        logger.info("company name"+ company.getName());
+        UserApp userApp = this.save(userInput.clone());
+        Inscription inscription = new Inscription();
+        inscription.setCompany(company);
+        inscription.setUserApp(userApp);
+        inscription.setResponsable(responsable);
+        inscription.setCompany(company);
+        inscriptionRepository.save(inscription);
         // TODO verification role user in company
-        UserApp userApp = this.save(userAppDto);
         // TODO Save inscription by in Company
-        return userApp;
+         return userRepository.findDistinctByInscriptionCompany_Id(idCompany);
 
     }
-    public <S extends UserApp> S save(S entity) {
+
+    public UserApp save(UserApp entity) {
         if (!StringUtils.isEmpty(entity.getUsername())) {
             UserApp userApp = userRepository.findByUsername(entity.getUsername());
             if (userApp != null && (!StringUtils.endsWithIgnoreCase(entity.getId(), userApp.getId())))
@@ -140,7 +164,7 @@ public class UserService {
             entity.setUsername(generateUsername(entity.getFirstname(), entity.getLastname()));
         }
         if (StringUtils.isEmpty(entity.getContact())) {
-            throw new RuntimeException("Contact is requered");
+            // TODO   throw new RuntimeException("Contact is requered");
         }
         if (!isValidPhoneNumber(entity.getContact())) {
             throw new RuntimeException("Pleas , make contact valid for " + entity.getContact());
@@ -148,7 +172,7 @@ public class UserService {
         entity.setContact(cleanPhonNumber(entity.getContact()));
 
         UserApp userApp = userRepository.findByContact(entity.getContact());
-        if (userApp != null && (!StringUtils.endsWithIgnoreCase(entity.getId(), userApp.getId())))
+        if (entity.getContact().length()>0 && userApp != null && (!StringUtils.endsWithIgnoreCase(entity.getId(), userApp.getId())))
             throw new RuntimeException("Contact " + separatePhoneNumber(entity.getContact()) + " is alredy in used");
         if (!StringUtils.isEmpty(entity.getEmail())) {
             userApp = userRepository.findByContact(entity.getContact().trim());
@@ -172,18 +196,20 @@ public class UserService {
         } else {
             logger.info("Rols existing 0 " + entity.getRoles());
         }
-        if (StringUtils.isEmpty(entity.getPassword()) ) {
-            if(StringUtils.isEmpty(entity.getPass())) {
+        if (StringUtils.isEmpty(entity.getPassword())) {
+            if (StringUtils.isEmpty(entity.getPass())) {
                 entity.setPass(UUID.randomUUID().toString());
             }
             entity.setPassword(encodePassword(entity.getPass()));
         } else {
-            if(! StringUtils.isEmpty(entity.getPass()))  {
-              //TODO   Prise en charge le changement de mot de pass
+            if (!StringUtils.isEmpty(entity.getPass())) {
+                //TODO   Prise en charge le changement de mot de pass
                 entity.setPassword(encodePassword(entity.getPass()));
             }
         }
-        return userRepository.save(entity);
+        UserApp u = entity.clone();
+        return userRepository.save(u);
+
     }
 
     public UserApp findByUsernamOrContactOrCinOrEmail(String login) {
@@ -221,9 +247,10 @@ public class UserService {
                 .collect(Collectors.toSet());
         return new UserDetailsDeto(userApp.getUsername(), userApp.getPassword(), permissionNames);
     }
-    public Set<String> getAutorities(String username){
+
+    public Set<String> getAutorities(String username) {
         UserApp userApp = userRepository.findByUsername(username);
-        if(userApp == null)
+        if (userApp == null)
             return new HashSet<>();
         Set<String> roleApps = userApp.getRolesToList();
         if (CollectionUtils.isEmpty(roleApps))
@@ -231,5 +258,13 @@ public class UserService {
         return roleApps.stream()
                 .flatMap(roleApp -> (ConfigAutorities.getAutorities(roleApp).stream()))
                 .collect(Collectors.toSet());
+    }
+
+
+    public List<UserApp> findDistinctByParcoursCompany(Integer idCompany) {
+        return userRepository.findDistinctByParcoursCompany(idCompany);
+    }
+    public List<UserApp> findDistinctByInscriptionCompany_Id(Integer idCompany) {
+        return userRepository.findDistinctByInscriptionCompany_Id(idCompany);
     }
 }

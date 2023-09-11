@@ -17,7 +17,7 @@ public class Inscription {
     private Integer id;
     @ManyToOne
     private UserApp responsable;
-    @ManyToOne
+    @OneToOne
     private UserApp userApp;
     @ManyToOne
     private Company company;
