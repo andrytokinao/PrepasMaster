@@ -14,8 +14,13 @@ export class PrincipaleMenueComponent implements OnInit {
 
   @Input() options : Config = { multi: false };
   authService :AuthenticationService;
-  constructor(au:AuthenticationService,private companyService:CompanyService) {
+  companyId:number;
+  companyService:CompanyService;
+
+  constructor(au:AuthenticationService,private cs:CompanyService) {
     this.authService=au;
+    this.companyService = cs;
+    this.companyId = this.companyService.company.id;
     this.menus= this.initMenue();
     this.authService.getAutoritiesObservable().subscribe(
       (data)=>{
@@ -43,7 +48,7 @@ export class PrincipaleMenueComponent implements OnInit {
          active: false,
          accessible : this.authService.hasAutorities(["CAN_VIEW_TRANSACTION","CAN_VIEW_ETAT_FINANCIAIRE"]),
          submenu: [
-           { name: 'Transaction', url: 'comptable/transactions', accessible : this.authService.hasAutorities(["CAN_VIEW_TRANSACTION"]), },
+           { name: 'Transaction', url: 'comptable/transactions', accessible : this.authService.hasAutorities(["CAN_VIEW_TRANSACTION"]) },
            { name: 'Etat', url: 'comptable/etat', accessible : this.authService.hasAutorities(["CAN_VIEW_ETAT_FINANCIAIRE"]), },
          ]
        },
@@ -55,7 +60,7 @@ export class PrincipaleMenueComponent implements OnInit {
          submenu: [
            { name: 'Membre', url: 'admin/users', accessible : this.authService.hasAutorities(["CAN_AFFECT_ROLE_RESPONSABLE","CAN_AFFECT_ROLE_ADMIN"]), },
            { name: 'Organisation  ', url: 'admin/company/details', accessible : this.authService.hasAutorities(["CAN_VIEW_LIST_COMPANY"]), },
-           { name: 'Liste des membres  ', url: 'admin/company/liste', accessible : this.authService.hasAutorities(["CAN_VIEW_LIST_COMPANY"]), },
+           { name: 'Liste des membres  ', url: "['/admin/company/liste', companyId]", accessible : this.authService.hasAutorities(["CAN_VIEW_LIST_COMPANY"]), },
            { name: 'Configuration', url: 'admin/config', accessible : this.authService.hasAutorities(["CAN_EDIT_COMPANY"]), },
            { name: 'Formation', url: 'admin/formation', accessible : this.authService.hasAutorities(["CAN_ADD_NEW_PARCOURS"]), }
          ]
