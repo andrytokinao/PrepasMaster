@@ -170,15 +170,19 @@ public class UserService {
             throw new RuntimeException("Pleas , make contact valid for " + entity.getContact());
         }
         entity.setContact(cleanPhonNumber(entity.getContact()));
-
-        UserApp userApp = userRepository.findByContact(entity.getContact());
-        if (entity.getContact().length()>0 && userApp != null && (!StringUtils.endsWithIgnoreCase(entity.getId(), userApp.getId())))
-            throw new RuntimeException("Contact " + separatePhoneNumber(entity.getContact()) + " is alredy in used");
+        UserApp userApp = null;
         if (!StringUtils.isEmpty(entity.getEmail())) {
+            userApp = userRepository.findByEmail(entity.getEmail().trim());
+            if (userApp != null && (!StringUtils.endsWithIgnoreCase(entity.getId(), userApp.getId())))
+                throw new RuntimeException("Email  " + entity.getEmail() + " is alredy in used");
+        }
+        userApp = null;
+        if (!StringUtils.isEmpty(entity.getContact())) {
             userApp = userRepository.findByContact(entity.getContact().trim());
             if (userApp != null && (!StringUtils.endsWithIgnoreCase(entity.getId(), userApp.getId())))
-                throw new RuntimeException("Email  " + entity.getContact() + " is alredy in used");
+                throw new RuntimeException("Contact  " + entity.getContact() + " is alredy in used");
         }
+        userApp = null;
         if (!StringUtils.isEmpty(entity.getCin())) {
             entity.setCin(entity.getCin().trim());
             userApp = userRepository.findByContact(entity.getCin().trim());

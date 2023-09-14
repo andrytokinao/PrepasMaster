@@ -7,6 +7,7 @@ import {UserApp} from "../../index/index-student";
 import {UserConnection} from "../../index/user-app";
 import {ActivatedRoute, Router} from "@angular/router";
 import {StudentService} from "../../service/student/student.service";
+import {CompanyService} from "../../service/company/company.service";
 
 @Component({
   selector: 'app-liste-students',
@@ -17,33 +18,36 @@ export class ListesStudentsComponent implements OnInit{
   students :any[]=[];
   error : any;
   private idCompany: number=0;
-  constructor(private apollo:Apollo,public dialog: MatDialog,private activatedRoute:ActivatedRoute,private studentService:StudentService,private router: Router) {
-    const updatedURL:string = this.router.createUrlTree([], {
-      relativeTo: this.activatedRoute,
-      queryParams: { company: '1' },
-      queryParamsHandling: 'merge',
-    }).toString();
 
-    this.router.navigateByUrl("updatedURL");
+  constructor(private apollo:Apollo,public dialog: MatDialog,private route:ActivatedRoute,private studentService:StudentService,private router: Router,private companyService:CompanyService) {
+
   }
 
 
   ngOnInit(): void {
-    this.apollo.watchQuery({
-      query:GET_STUDENTS
-    }).valueChanges.subscribe(({data,error}:any)=>{
-        this.students = data.getStudents;
-        this.error = error;
-      }
-    );
+
+    this.studentService.findDistinctByInscriptionCompany_Id(this.idCompany);
+
     this.studentService.studentsStatus$.subscribe(
       (data:any)=>{
         this.students = data;
       }
     );
 
-    this.activatedRoute.queryParams.subscribe((params) => {
-      this.idCompany =Number( params['company']);
+    this.route.queryParams.subscribe((params) => {
+
+      if (!params.hasOwnProperty('company')) {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: { company:  this.companyService.company.id},
+          queryParamsHandling: 'merge'
+        });
+      }else {
+        this.idCompany =Number( params['company']);
+        if(this.companyService.company.id != this.idCompany){
+          this.companyService.getById(this.idCompany);
+        }
+      }
       this.studentService.findDistinctByInscriptionCompany_Id(this.idCompany);
     });
   }
@@ -57,7 +61,7 @@ export class ListesStudentsComponent implements OnInit{
     },);
 
     dialogRef.afterClosed().subscribe(result => {
-      this.studentService.findDistinctByInscriptionCompany_Id(this.idCompany);
+  //    this.studentService.findDistinctByInscriptionCompany_Id(this.idCompany);
     });
   }
 
@@ -73,7 +77,7 @@ export class ListesStudentsComponent implements OnInit{
     },);
 
     dialogRef.afterClosed().subscribe(result => {
-      // Logique après la fermeture de la boîte de dialogue
+    //  this.studentService.findDistinctByInscriptionCompany_Id(this.idCompany);
     });
   }
 }

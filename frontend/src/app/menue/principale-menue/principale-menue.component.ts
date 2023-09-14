@@ -60,7 +60,7 @@ export class PrincipaleMenueComponent implements OnInit {
          submenu: [
            { name: 'Membre', url: 'admin/users', accessible : this.authService.hasAutorities(["CAN_AFFECT_ROLE_RESPONSABLE","CAN_AFFECT_ROLE_ADMIN"]), },
            { name: 'Organisation  ', url: 'admin/company/details', accessible : this.authService.hasAutorities(["CAN_VIEW_LIST_COMPANY"]), },
-           { name: 'Liste des membres  ', url: "['/admin/company/liste', companyId]", accessible : this.authService.hasAutorities(["CAN_VIEW_LIST_COMPANY"]), },
+           { name: 'Liste des membres  ', url: "/admin/company/liste", accessible : this.authService.hasAutorities(["CAN_VIEW_LIST_COMPANY"]), },
            { name: 'Configuration', url: 'admin/config', accessible : this.authService.hasAutorities(["CAN_EDIT_COMPANY"]), },
            { name: 'Formation', url: 'admin/formation', accessible : this.authService.hasAutorities(["CAN_ADD_NEW_PARCOURS"]), }
          ]

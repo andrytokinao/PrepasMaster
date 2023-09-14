@@ -13,6 +13,10 @@ public interface UserRepository extends JpaRepository<UserApp,String> {
     UserApp findByEmail(String email);
     UserApp findByContact(String contact);
     UserApp findByCin(String cin);
+    @Query("SELECT DISTINCT u FROM Inscription i " +
+            "JOIN i.company c " +
+            "JOIN i.userApp u " +
+            "WHERE c.id = :idCompany")
     List<UserApp> findDistinctByInscriptionCompany_Id(Integer idCompany);
     @Query("SELECT DISTINCT u FROM UserApp u " +
             "JOIN u.parcours parcours " +

@@ -30,6 +30,7 @@ export class CompanyService {
 
   constructor(private apollo: Apollo) {
     this.company.id=1;
+    this.getById(1);
   }
 
   saveCompany(company: any) {

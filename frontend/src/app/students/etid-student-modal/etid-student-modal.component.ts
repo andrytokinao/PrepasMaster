@@ -4,6 +4,7 @@ import {Apollo} from "apollo-angular";
 import {StudentService} from "../../service/student/student.service";
 import {UserApp} from "../../index/index-student";
 import {stripTypename} from "@apollo/client/utilities";
+import {CompanyService} from "../../service/company/company.service";
 
 @Component({
   selector: 'app-etid-student-modal',
@@ -11,7 +12,7 @@ import {stripTypename} from "@apollo/client/utilities";
   styleUrls: ['./etid-student-modal.component.css']
 })
 export class EtidStudentModalComponent {
-  public newStudent: UserApp;
+  public newStudent: any;
   public studentService;
 
   constructor(
@@ -21,7 +22,8 @@ export class EtidStudentModalComponent {
 
     },
     private apollo: Apollo,
-    public studentService1: StudentService
+    public studentService1: StudentService,
+    private companyService:CompanyService
   ) {
     this.newStudent = data.student;
     this.studentService = studentService1;
@@ -32,22 +34,17 @@ export class EtidStudentModalComponent {
   }
 
   onSaveClick() {
-    const strippedInput = {
-      id:"",
-      username:"String",
-      password :"String",
-      firstname:"String",
-      lastname:"String",
-      contact:"",
-      cin:"String",
-      email:"String",
-      adress:"String",
-      codeParenage:"String",
-      idCompany:1,
-      userResponsable:"0341981972"}
 
-    this.studentService.addUser(strippedInput).subscribe(
-      ({data}) => {
+     if(this.companyService == null || this.companyService.company == null || !(this.companyService.company.id>0)){
+       // TODO ; Creer une affichage de message d'erreur
+       alert('You cant save this ');
+       return;
+     }
+     this.newStudent.idCompany=this.companyService.company.id;
+     this.newStudent.userResponsable="0341981972" // TODO ; Remplacer par l'utilisateur connecté (coté front ou coté back )
+     this.studentService.addUser(this.newStudent).subscribe(
+      (res:any) => {
+        this.studentService.setStudents(res.data.addUser)
         this.dialogRef.close();
       },
       (error) => {

@@ -44,7 +44,7 @@ import {ListComponent} from "./admin/company/list/list.component";
     StudentsModule,
     MenueModule,
     RouterModule.forRoot([
-      {path: ":company/etudiants/liste", component: ListesStudentsComponent},
+      {path: "etudiants/liste", component: ListesStudentsComponent},
       {path: "etudiants/verification", component: VerificationComponent},
       {path: "comptable/transactions", component: TransactionComponent},
       {path: "comptable/etat", component: EtatComponent},
