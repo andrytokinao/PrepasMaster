@@ -20,8 +20,7 @@ public interface UserRepository extends JpaRepository<UserApp,String> {
     List<UserApp> findDistinctByInscriptionCompany_Id(Integer idCompany);
     @Query("SELECT DISTINCT u FROM UserApp u " +
             "JOIN u.parcours parcours " +
-            "JOIN parcours.formation formation " +
-            "JOIN formation.company company " +
+            "JOIN parcours.company company " +
             "WHERE company.id = :idCompany")
     List<UserApp> findDistinctByParcoursCompany(Integer idCompany);
 

@@ -61,7 +61,7 @@ export class ListesStudentsComponent implements OnInit{
     },);
 
     dialogRef.afterClosed().subscribe(result => {
-  //    this.studentService.findDistinctByInscriptionCompany_Id(this.idCompany);
+      this.studentService.findDistinctByInscriptionCompany_Id(this.idCompany);
     });
   }
 

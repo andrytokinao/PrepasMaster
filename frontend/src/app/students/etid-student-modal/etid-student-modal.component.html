@@ -13,7 +13,7 @@
             <input matInput type="text" placeholder="Username" class="d100" [(ngModel)]="newStudent.username">
           </mat-form-field>
           <mat-form-field class="d-block">
-            <input matInput type="text" placeholder="Nome " class="d100" [(ngModel)]="newStudent.firstname">
+            <input matInput type="text" placeholder="Nom " class="d100" [(ngModel)]="newStudent.firstname">
           </mat-form-field>
           <mat-form-field class="d-block">
             <input matInput type="text" placeholder="Prénom  " class="d100" [(ngModel)]="newStudent.lastname">
@@ -36,51 +36,71 @@
         </div>
       </mat-card>
     </mat-tab>
-    <mat-tab label="Parcours ">
+    <mat-tab label="Parcours" *ngIf="newStudent.id">
       <mat-card class="mat-padding">
         <div class="sidebar-hedingd   ">
-          <ol class="list-group list-group-numbered">
-            <li class="list-group-item d-flex justify-content-between align-items-start">
+          <ol class="list-group list-group-numbered" *ngIf="!showFormAddParcours">
+
+            <li class="list-group-item d-flex justify-content-between align-items-start"  *ngFor="let parcour of parcours">
               <div class="ms-2 me-auto">
-                <div class="fw-bold">Prepa Poly :Company</div>
-                <p>Septembre - Novembre : 2023 : Company</p>
-              </div>
-              <span class="badge bg-primary rounded-pill">14</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-start">
-              <div class="ms-2 me-auto">
-                <div class="fw-bold">Prepa Agro : Company</div>
+                <div class="fw-bold"> <span *ngFor="let f of parcour.formations">{{f.name}}, </span> : <span>{{parcour.company.name}}</span> </div>
                 Septembre - Novembre : 2023
               </div>
               <span class="badge bg-primary rounded-pill glyphicon glyphicon-pencil"></span>
             </li>
+
+            <div (click)="showFormAddParcours=true" >
+              <span class="badge bg-primary rounded-pill" >Ajouter</span>
+            </div>
+
+          </ol>
+          <ol *ngIf="showFormAddParcours">
             <li class="list-group-item d-flex justify-content-between align-items-start">
               <div class="ms-2 me-auto">
-                <div class="fw-bold">Prepa ENI : Company</div>
-                Septembre - Novembre : 2023
-              </div>
-              <span class="badge bg-primary rounded-pill">14</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-start">
-              <div class="ms-2 me-auto">
-                <div class="fw-bold">Nouveau</div>
-                <div>
-                  <span> Cours :</span>
-                  <input type="text"/>
+                <div class="fw-bold">Cours </div>
+
+
+                <div class="form-check form-check-inline" *ngFor="let formation of formations">
+                  <input
+                    mdbCheckbox
+                    class="form-check-input"
+                    type="checkbox"
+                    [id]="'check-formation-'+formation.id"
+                    value="option1"
+                    [(ngModel)]="formation.checked"
+                    [disabled]="formation.disabled"
+                  />
+                  <label class="form-check-label" [for] ="'check-formation-'+formation.id">{{formation.name}}</label>
                 </div>
+
+
                 <div>
-                  <span> Durrée : </span>
-                  <input type="text"/>
+                  <div class="fw-bold">Durrée </div>
+                  <mat-form-field class="d-float">
+                    <input matInput type="number" placeholder="Durrée" class="d10" [(ngModel)]="parcoursImput.durree">
+                  </mat-form-field>
+                  <label>
+                    <input type="radio" name="color" value="red"> Jours
+                  </label>
+                  <label>
+                    <input type="radio" name="color" value="blue" [(ngModel)]="parcoursImput.durree"> Mois
+                  </label>
+                  <label>
+                    <input type="radio" name="color" value="blue"> Indeterminé
+                  </label>
+
                 </div>
                 <div>
                   <span>sur la description du chaque chelectionné ( prix / durré ) </span>
                   50 000 Ariary
                 </div>
+                <div>
+                  <span class="badge bg-primary rounded-pill" >Annuler</span>
+                  <span class="badge bg-primary rounded-pill" (click)="addParcours()">Ajouter</span>
+
+                </div>
               </div>
 
-
-              <span class="badge bg-primary rounded-pill">Ajouter</span>
-              <span class="badge bg-primary rounded-pill">Annuler </span>
             </li>
           </ol>
         </div>
@@ -90,6 +110,6 @@
 </mat-dialog-content>
 <mat-dialog-actions>
   <span fxFlex></span>
-  <button mat-button (click)="onCancelClick()">Annuler</button>
-  <button mat-raised-button color="primary" (click)="onSaveClick()">Enregistrer</button>
+  <button mat-button (click)="onCancelClick()" *ngIf="!newStudent.id">Annuler</button>
+  <button mat-raised-button color="primary" (click)="onSaveClick()"> <span> {{newStudent.id ? 'Terminer' : 'Suivante'}} </span></button>
 </mat-dialog-actions>

@@ -17,11 +17,11 @@ type Mutation {
         confirmation:Float
         montant:String
     ):Transaction
-    addParcours(parcours:ParcoursImput) :Parcours
+    addParcours(parcours:ParcoursImput) :[Parcours]
     saveCompany(company:CompanyInput) :Company
     addPosteCompany(poste:PosteImput) :[Poste]
     addPosteUser(poste:PosteImput) :[Poste]
-    addUser(user:UserImput):[UserApp]
+    addUser(user:UserImput):UserApp
 
 }
 

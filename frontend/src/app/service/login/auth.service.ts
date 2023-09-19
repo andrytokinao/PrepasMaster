@@ -109,7 +109,7 @@ export class AuthenticationService {
   loadAutorities(){
     this.http.get(API_BASE_URL + '/api/autorities').subscribe(
       data => {
-        this.setAutorities(data);
+       // TODO  this.setAutorities(data);
       });
   }
   setConnected(c: any) {

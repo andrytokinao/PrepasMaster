@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -13,16 +15,18 @@ public class Parcour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id ;
-    @ManyToOne
-    private Formation formation;
+    @ManyToMany
+    private List<Formation> formations;
     @ManyToOne
     private UserApp userApp;
     @ManyToOne
     private UserApp responsable;
     @ManyToOne
     private Company company;
-    private int durree;
+    private Double durree;
     private String unitiDurre ;
     private Double prix;
     private String description ;
+
+
 }

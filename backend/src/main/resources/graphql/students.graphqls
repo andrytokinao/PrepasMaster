@@ -2,11 +2,12 @@
 type Formation {
     id:Int
     name:String
+    desabled:Boolean
     description:String
 }
 type Parcours{
     id:Int
-    formation:Formation
+    formations:[Formation]
     userApp:UserApp
     company:Company
     durree:Int
@@ -62,6 +63,7 @@ type UserApp{
     cin:String
     roles:String
     postes:[Poste]
+    parcours:[Parcours]
 }
 type Compte {
     id:String,
@@ -87,11 +89,11 @@ input UserAppImput{
 
 input ParcoursImput{
     id:Int
-    formationId:Int
+    formationIds:[Int]
     userId:String
     companyId:Int
     responsableId:String
-    durree:Int
+    durree:Float
     unitiDurre:String
     prix:Float
     description:String

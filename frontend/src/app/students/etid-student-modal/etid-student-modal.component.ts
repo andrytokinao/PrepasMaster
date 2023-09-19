@@ -12,8 +12,13 @@ import {CompanyService} from "../../service/company/company.service";
   styleUrls: ['./etid-student-modal.component.css']
 })
 export class EtidStudentModalComponent {
-  public newStudent: any;
+  public newStudent: any={};
   public studentService;
+  checked:boolean = true ;
+  parcoursImput: any = {};
+  showFormAddParcours: boolean = false;
+  formations: any[] = [];
+  public parcours: any[]=[];
 
   constructor(
     public dialogRef: MatDialogRef<EtidStudentModalComponent>,
@@ -27,6 +32,13 @@ export class EtidStudentModalComponent {
   ) {
     this.newStudent = data.student;
     this.studentService = studentService1;
+    this.studentService.studentStatus$.subscribe(
+      (data)=>{
+        this.newStudent = data;
+        alert("students id ="+this.newStudent.id);
+      }
+    );
+    this.formations = stripTypename(this.companyService.formations) ;
   }
 
   onCancelClick(): void {
@@ -42,17 +54,24 @@ export class EtidStudentModalComponent {
      }
      this.newStudent.idCompany=this.companyService.company.id;
      this.newStudent.userResponsable="0341981972" // TODO ; Remplacer par l'utilisateur connecté (coté front ou coté back )
-     this.studentService.addUser(this.newStudent).subscribe(
-      (res:any) => {
-        this.studentService.setStudents(res.data.addUser)
-        this.dialogRef.close();
-      },
-      (error) => {
-        const errorJson = JSON.stringify(error);
-        alert('Erreur lors de l\'enregistrement de l\'étudiant: ' + errorJson);
+     this.studentService.addUser(this.newStudent);
+  }
+  addParcours(){
+      this.parcoursImput.userId = this.newStudent.id;
+      this.parcoursImput.companyId = this.companyService.company.id
+      let formations = this.formations.filter(element => element.checked);
+      const formationIds = formations.map(objet => objet.id);
+      this.parcoursImput.responsableId="0341981972";// TODO Il faut recuperer l'user encours
+      this.parcoursImput.formationIds = formationIds;
+      this.studentService.addParcours(this.parcoursImput).subscribe(
+        (res:any)=>{
+         // TODO : a resolve le probleme ,   this.newStudent.parcours innaccessible
+          // this.newStudent.parcours =res.data.addParcours;
+          this.parcours = res.data.addParcours;
+          this.showFormAddParcours = false;
+        }
+      );
 
-      }
-    );
   }
 
 }

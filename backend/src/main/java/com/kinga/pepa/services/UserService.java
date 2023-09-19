@@ -1,17 +1,12 @@
 package com.kinga.pepa.services;
 
 import com.kinga.pepa.config.ConfigAutorities;
+import com.kinga.pepa.dto.ParcoursInput;
 import com.kinga.pepa.dto.PosteDto;
 import com.kinga.pepa.dto.UserInput;
 import com.kinga.pepa.dto.UserDetailsDeto;
-import com.kinga.pepa.entity.Company;
-import com.kinga.pepa.entity.Inscription;
-import com.kinga.pepa.entity.Poste;
-import com.kinga.pepa.entity.UserApp;
-import com.kinga.pepa.repository.CompanyRepository;
-import com.kinga.pepa.repository.InscriptionRepository;
-import com.kinga.pepa.repository.PosteRepository;
-import com.kinga.pepa.repository.UserRepository;
+import com.kinga.pepa.entity.*;
+import com.kinga.pepa.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +35,10 @@ public class UserService {
     CompanyRepository companyRepository;
     @Autowired
     InscriptionRepository inscriptionRepository;
+    @Autowired
+    FormationRepository formationRepository;
+    @Autowired
+    ParcourRepository parcourRepository;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public List<Poste> findPosteByUsername(String userId) {
@@ -129,7 +128,7 @@ public class UserService {
     }
 
     @Transactional
-    public List<UserApp> addUser(UserInput userInput) {
+    public UserApp addUser(UserInput userInput) {
         logger.info("Insciption " + userInput.toString());
         String userResponsable = userInput.getUserResponsable();
         Integer idCompany = userInput.getIdCompany();
@@ -151,7 +150,7 @@ public class UserService {
         inscriptionRepository.save(inscription);
         // TODO verification role user in company
         // TODO Save inscription by in Company
-         return userRepository.findDistinctByInscriptionCompany_Id(idCompany);
+         return userApp;
 
     }
 
@@ -228,10 +227,12 @@ public class UserService {
         if (userApp == null)
             userApp = userRepository.findByCin(login);
         if (userApp == null) {
-            userApp = userRepository.getById(login);
+            if(userRepository.existsById(login))
+               userApp = userRepository.getById(login);
         }
         if (userApp == null)
             return null;
+        logger.info("Inding by login result " +(userApp==null?"Null ":userApp.getId()));
         return userApp;
     }
 
@@ -270,5 +271,35 @@ public class UserService {
     }
     public List<UserApp> findDistinctByInscriptionCompany_Id(Integer idCompany) {
         return userRepository.findDistinctByInscriptionCompany_Id(idCompany);
+    }
+    @Transactional
+    public List<Parcour> addParcours(ParcoursInput parcours) {
+        if (!StringUtils.isEmpty(parcours.validator()))
+            throw new RuntimeException(parcours.validator());
+        if (!companyRepository.existsById(parcours.getCompanyId()))
+            throw new RuntimeException("Company# " + parcours.getCompanyId() + " Not found");
+        if (CollectionUtils.isEmpty(parcours.getFormationIds()))
+            throw new RuntimeException("Formation# " + parcours.getCompanyId() + " Not found");
+        UserApp responsable = this.findByUsernamOrContactOrCinOrEmail(parcours.getResponsableId());
+        UserApp userApp = this.findByUsernamOrContactOrCinOrEmail(parcours.getUserId());
+        if (userApp == null || StringUtils.isEmpty(userApp.getId()))
+            throw new RuntimeException("User# " + parcours.getUserId() + " Not found");
+        if ( responsable == null)
+            throw new RuntimeException("Responsable# " + parcours.getCompanyId() + " Not found");
+
+        Company company = companyRepository.getById(parcours.getCompanyId());
+        List<Formation> formations = formationRepository.findAllById(parcours.getFormationIds());
+
+        Parcour newParcour = new Parcour();
+        newParcour.setDescription(parcours.getDescription());
+        newParcour.setDurree(parcours.getDurree());
+        newParcour.setPrix(parcours.getPrix());
+        newParcour.setCompany(company);
+        newParcour.setUserApp(userApp);
+        newParcour.setResponsable(responsable);
+        newParcour.setFormations(formations);
+        parcourRepository.save(newParcour);
+        return parcourRepository.findByUserApp_Id(userApp.getId());
+
     }
 }

@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import gql from "graphql-tag";
 import {Apollo} from "apollo-angular";
 import {
   ADD_POSTE_COMPANY,
   GET_COMPANIES,
-  GET_COMPANY_BY_ID,
+  GET_COMPANY_BY_ID, GET_FORMATIONS,
   GET_POSTE_BY_COMPANY,
   GET_STUDENTS,
   SAVE_COMPANY
@@ -15,12 +15,12 @@ import {ApolloQueryResult} from "@apollo/client";
 @Injectable({
   providedIn: 'root'
 })
-export class CompanyService {
+export class CompanyService implements OnInit{
   public company: any={};
   public postes : any;
   private companyObservable: Subject<any> = new Subject<any>();
   private postesObservable: Subject<any> = new Subject<any>();
-
+  public formations:any[] = [];
   get companyStatus$(): Observable<boolean> {
     return this.companyObservable.asObservable();
   }
@@ -31,6 +31,7 @@ export class CompanyService {
   constructor(private apollo: Apollo) {
     this.company.id=1;
     this.getById(1);
+    this.getFormations(1);
   }
 
   saveCompany(company: any) {
@@ -66,6 +67,17 @@ export class CompanyService {
         }
       )
   }
+  getFormations(idCompany: number) {
+    return this.apollo
+      .query({
+        query: GET_FORMATIONS,
+        variables: {idCompany: idCompany}
+      }).subscribe(
+        (response:any)=>{
+          this.formations = response.data.getFormations
+        }
+      )
+  }
 
   addPoste(poste: any) {
     return this.apollo
@@ -96,6 +108,11 @@ export class CompanyService {
         this.setCompany(rep.data.getCompanyById);
       }
     )
+  }
+
+  ngOnInit(): void {
+    this.getFormations(1);
+
   }
 
 }

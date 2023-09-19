@@ -15,6 +15,5 @@ public class Formation {
     private Integer id;
     private String name;
     private String descriptin;
-    @ManyToOne
-    private Company company;
+
 }

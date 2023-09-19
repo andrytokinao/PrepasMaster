@@ -1,7 +1,10 @@
 package com.kinga.pepa.services;
 
+import com.kinga.pepa.dto.FormationDTO;
 import com.kinga.pepa.entity.Company;
+import com.kinga.pepa.entity.Formation;
 import com.kinga.pepa.repository.CompanyRepository;
+import com.kinga.pepa.repository.FormationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -10,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -18,6 +22,8 @@ import java.util.function.Function;
 public class CompanyService {
     @Autowired
     CompanyRepository companyRepository;
+    @Autowired
+    FormationRepository formationRepository;
 
     @Deprecated
     public Company getById(Integer integer) {
@@ -90,5 +96,16 @@ public class CompanyService {
 
     public <S extends Company, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return companyRepository.findBy(example, queryFunction);
+    }
+    public List<FormationDTO> getFormations(Integer idCompany){
+        List<Formation> formations = formationRepository.findAll();
+        List<FormationDTO> formationDTOS = new ArrayList<>();
+        formations.forEach((e)->{
+            FormationDTO f = new FormationDTO(e);
+            f.setDesabled(true);
+            formationDTOS.add(f);
+        });
+        // TODO Identifer les formations desactivé et activée pour chaque company
+        return formationDTOS;
     }
 }

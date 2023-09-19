@@ -9,4 +9,5 @@ type Query {
     getPosteCompany(idCompany:Int):[Poste]
     findDistinctByParcoursCompany(idCompany:Int):[UserApp]
     findDistinctByInscriptionCompany_Id(idCompany:Int):[UserApp]
+    getFormations(idCompany:Int):[Formation]
 }

@@ -58,6 +58,16 @@ const SAVE_COMPANY = gql`
     }
   }
 `;
+const GET_FORMATIONS = gql`
+  query getFormations($idCompany: Int!) {
+    getFormations(idCompany: $idCompany) {
+      id
+      name
+      desabled
+      description
+    }
+  }
+`;
 const GET_COMPANY_BY_ID = gql`
   query GetCompany($idCompany: Int) {
     getCompanyById(idCompany: $idCompany) {
@@ -83,6 +93,25 @@ const ADD_USER = gql`
     }
   }
 `;
+const ADD_PARCOURS = gql`
+  mutation AddParcours($parcours:ParcoursImput) {
+    addParcours(parcours: $parcours) {
+      id
+      formations{
+                id
+                name
+                description
+      }
+      company{
+            id
+            name
+      }
+      durree
+      unitiDurre
+      description
+  }
+  }
+`;
 const GET_USER_BY_INSCRIPTION = gql`
   query findDistinctByInscriptionCompany_Id($idCompany:Int) {
     findDistinctByInscriptionCompany_Id(idCompany: $idCompany) {
@@ -91,6 +120,15 @@ const GET_USER_BY_INSCRIPTION = gql`
       firstname
       contact
       cin
+      parcours{
+        company {
+          name
+        }
+        formations {
+          name
+        }
+      }
+
     }
   }
 `;
@@ -102,5 +140,7 @@ export {
   SAVE_COMPANY,
   GET_COMPANY_BY_ID,
   ADD_USER,
-  GET_USER_BY_INSCRIPTION
+  GET_USER_BY_INSCRIPTION,
+  ADD_PARCOURS,
+  GET_FORMATIONS
 }

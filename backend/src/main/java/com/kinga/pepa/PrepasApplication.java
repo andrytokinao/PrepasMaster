@@ -1,7 +1,9 @@
 package com.kinga.pepa;
 
 import com.kinga.pepa.entity.Company;
+import com.kinga.pepa.entity.Formation;
 import com.kinga.pepa.entity.UserApp;
+import com.kinga.pepa.repository.FormationRepository;
 import com.kinga.pepa.services.CompanyService;
 import com.kinga.pepa.services.UserService;
 import org.springframework.boot.SpringApplication;
@@ -21,6 +23,7 @@ public class PrepasApplication {
         ConfigurableApplicationContext ctx = SpringApplication.run(PrepasApplication.class, args);
         UserService userService = ctx.getBean(UserService.class);
         CompanyService companyService = ctx.getBean(CompanyService.class);
+        FormationRepository formationRepository = ctx.getBean(FormationRepository.class);
         UserApp userApp = new UserApp();
         userApp.setPass("123");
         userApp.setLastname("Andriamahefasoa");
@@ -34,6 +37,14 @@ public class PrepasApplication {
         company.setSlogan("Slongant ");
         company.setDescription("Init description of company ");
         companyService.save(company);
+
+
+        for (int i = 1; i < 6; i++) {
+            Formation f = new Formation();
+            f.setName("Prepa TEST"+i);
+            f.setDescriptin("Cours prepa TEST"+i);
+            formationRepository.save(f);
+        }
 
     }
 

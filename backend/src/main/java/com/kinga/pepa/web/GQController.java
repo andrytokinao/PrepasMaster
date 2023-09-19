@@ -1,8 +1,11 @@
 package com.kinga.pepa.web;
 
+import com.kinga.pepa.dto.FormationDTO;
+import com.kinga.pepa.dto.ParcoursInput;
 import com.kinga.pepa.dto.PosteDto;
 import com.kinga.pepa.dto.UserInput;
 import com.kinga.pepa.entity.Company;
+import com.kinga.pepa.entity.Parcour;
 import com.kinga.pepa.entity.Poste;
 import com.kinga.pepa.services.CompanyService;
 import com.kinga.pepa.services.CustomUserDetailsService;
@@ -57,8 +60,12 @@ public class GQController {
         return user;
     }
     @MutationMapping
-    public List<UserApp> addUser(@Argument UserInput user){
+    public UserApp addUser(@Argument UserInput user){
         return userService.addUser(user);
+    }
+    @MutationMapping
+    public List<Parcour> addParcours(@Argument ParcoursInput parcours){
+        return userService.addParcours(parcours);
     }
     @MutationMapping
     public List<Poste> addPosteUser(@Argument PosteDto poste){
@@ -101,7 +108,10 @@ public class GQController {
     public List<UserApp> findDistinctByInscriptionCompany_Id(@Argument  Integer idCompany) {
         return userService.findDistinctByInscriptionCompany_Id(idCompany);
     }
-
+    @QueryMapping
+    public List<FormationDTO> getFormations(@Argument Integer idCompany){
+        return companyService.getFormations(idCompany);
+    }
     @GetMapping({"/", "/compte/**", "/etudiants/**","/comptable/**","/admin/**"})
     public String publicRedirection(){
         logger.info("loading page frontend  ");

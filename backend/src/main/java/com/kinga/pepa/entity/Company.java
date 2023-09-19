@@ -24,8 +24,7 @@ public class Company {
     private List<Poste> postes;
     @OneToMany
     private List<Parcour> parcours;
-    @OneToMany
-    private List<Formation> formations;
+
 
 
 }
